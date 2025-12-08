@@ -57,7 +57,7 @@ public class ClientEventForgeSubscriber {
         PoseStack matrixStack = event.getPoseStack();
         matrixStack.pushPose();
         VertexConsumer builder = renderTypeBuffer.getBuffer(RenderType.translucent());
-        // 修复颜色设置方式 - 使用正确的颜色设置方法
+        // Fix color setting method - use correct color setting approach
         builder.color(255, 0, 0, 255); // 改回 color 方法
         renderTypeBuffer.endBatch(RenderType.translucent());
         matrixStack.popPose();
@@ -146,7 +146,7 @@ public class ClientEventForgeSubscriber {
             PoseStack poseStack = event.getGuiGraphics().pose();
             int width = window.getGuiScaledWidth();
             int height = window.getGuiScaledHeight();
-            // 调用正确的方法签名
+            // Call correct method signature
             new ScopeZoomGui(Minecraft.getInstance()).drawGuiContainerBackgroundLayer(poseStack, 0, 0, width, height);
         }
     }

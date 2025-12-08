@@ -137,7 +137,7 @@ public class NukeExplosion extends Explosion {
                     BlockPos blockpos1 = blockpos.immutable();
                     this.world.getProfiler().push("explosion_blocks");
                     
-                    // 简化的掉落物处理 - 使用 Block.getDrops 方法
+                    // Simplified drop handling - using Block.getDrops method
                     if (blockstate.canDropFromExplosion(this.world, blockpos, this) && this.world instanceof ServerLevel serverLevel) {
                         handleBlockDrops(serverLevel, blockstate, blockpos, blockpos1, objectarraylist);
                     }
@@ -163,7 +163,7 @@ public class NukeExplosion extends Explosion {
 
     private void handleBlockDrops(ServerLevel serverLevel, BlockState blockstate, BlockPos blockpos, BlockPos blockpos1, ObjectArrayList<Pair<ItemStack, BlockPos>> objectarraylist) {
         try {
-            // 方法1：使用 Block.getDrops 静态方法（最可靠的方法）
+            // Method 1: Use Block.getDrops static method (most reliable method)
             BlockEntity tileentity = blockstate.hasBlockEntity() ? this.world.getBlockEntity(blockpos) : null;
             List<ItemStack> drops = Block.getDrops(blockstate, serverLevel, blockpos, tileentity, this.exploder, ItemStack.EMPTY);
             
@@ -171,15 +171,15 @@ public class NukeExplosion extends Explosion {
                 addBlockDrops(objectarraylist, drop, blockpos1);
             }
         } catch (Exception e) {
-            // 方法2：如果上面的方法失败，使用备选方案
+            // Method 2: If the above method fails, use alternative method
             try {
-                // 使用更基础的掉落物获取方式
+                // Use more basic drop acquisition method
                 ItemStack itemStack = new ItemStack(blockstate.getBlock().asItem());
                 if (!itemStack.isEmpty()) {
                     addBlockDrops(objectarraylist, itemStack, blockpos1);
                 }
             } catch (Exception e2) {
-                // 如果都失败，跳过这个方块的掉落
+                // If all fail, skip drops for this block
             }
         }
     }

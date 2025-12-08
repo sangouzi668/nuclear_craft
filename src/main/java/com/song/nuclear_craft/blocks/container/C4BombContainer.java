@@ -17,12 +17,12 @@ public class C4BombContainer extends AbstractContainerMenu {
     // private final IWorldPosCallable canInteractWithCallable;
 
     public C4BombContainer(int windowId, Inventory playerInventory, C4BombTileEntity tileEntity){
-        // 修复：使用 .get() 获取实际的 MenuType
+        // Fix: Use .get() to get the actual MenuType
         super(ContainerTypeList.C4_BOMB_CONTAINER_TYPE.get(), windowId);
         this.tileEntity = tileEntity;
         
-        // 移除玩家物品栏槽位，只显示C4专用GUI
-        // 不添加任何槽位，因为C4 GUI只是用于设置和显示，不需要物品交互
+        // Remove player inventory slots, only show C4-specific GUI
+        // Do not add any slots, as C4 GUI is only for settings and display, no item interaction needed
     }
 
     public C4BombContainer(int windowId, Inventory playerInventory, FriendlyByteBuf data){
@@ -45,18 +45,18 @@ public class C4BombContainer extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player playerIn) {
-        // TODO: 实现正确的交互距离检查
+        // TODO: Implement correct interaction distance check
         // return isWithinUsableDistance(canInteractWithCallable, playerIn, BlockList.C4_ATOMIC_BOMB);
         return true;
     }
 
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
-        // 由于容器没有任何槽位（包括玩家物品栏），快速移动操作不适用
+        // Since the container has no slots (including player inventory), quick move operation is not applicable
         return ItemStack.EMPTY;
     }
     
-    // 添加玩家物品栏槽位
+    // Add player inventory slots
     private void addPlayerInventory(Inventory playerInventory) {
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < 9; ++j) {
@@ -65,7 +65,7 @@ public class C4BombContainer extends AbstractContainerMenu {
         }
     }
     
-    // 添加玩家快捷栏槽位
+    // Add player hotbar slots
     private void addPlayerHotbar(Inventory playerInventory) {
         for (int i = 0; i < 9; ++i) {
             this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));

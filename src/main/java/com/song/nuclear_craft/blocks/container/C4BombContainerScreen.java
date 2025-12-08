@@ -17,7 +17,7 @@ public class C4BombContainerScreen extends AbstractContainerScreen<C4BombContain
 
     public C4BombContainerScreen(C4BombContainer screenContainer, Inventory inv, Component titleIn) {
         super(screenContainer, inv, titleIn);
-        // 设置GUI大小，只显示C4专用部分，不包括玩家背包
+        // Set GUI size, only show C4-specific part, excluding player inventory
         this.imageWidth = 176; // 根据GUI纹理的实际宽度调整
         this.imageHeight = 166; // 根据GUI纹理的实际高度调整
     }
@@ -33,7 +33,7 @@ public class C4BombContainerScreen extends AbstractContainerScreen<C4BombContain
     @Override
     protected void renderLabels(GuiGraphics guiGraphics, int x, int y) {
         PoseStack poseStack = guiGraphics.pose();
-        // 使用 GuiGraphics 的 drawString 方法
+        // Use GuiGraphics drawString method
         guiGraphics.drawString(this.font, this.menu.tileEntity.inputPanel + " s", 83, 13, 4210752, false);
         
         if (this.menu.tileEntity.isActive()) {

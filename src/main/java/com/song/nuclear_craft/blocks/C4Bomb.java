@@ -127,7 +127,7 @@ public abstract class C4Bomb extends FaceAttachedHorizontalDirectionalBlock impl
                     c4BombTileEntity.defuseTime = ((DefuseKit) (itemStack.getItem())).getDefuseTick();
                     c4BombTileEntity.defusingEntityID = player.getId();
                 
-                // 修复：使用 BuiltInRegistries 获取物品注册名
+                // Fix: Use BuiltInRegistries to get item registry name
                     ResourceLocation defuseKitRegistryName = BuiltInRegistries.ITEM.getKey(itemStack.getItem());
                     c4BombTileEntity.defusingTool = defuseKitRegistryName.toString();
                 
@@ -146,7 +146,7 @@ public abstract class C4Bomb extends FaceAttachedHorizontalDirectionalBlock impl
                 if (tileentity instanceof C4BombTileEntity) {
                     ((C4BombTileEntity) tileentity).synToClient();
                 
-                    // 修复：使用新的 openScreen 方法
+                    // Fix: Use new openScreen method
                     NetworkHooks.openScreen((ServerPlayer) player, (C4BombTileEntity) tileentity, buf -> {
                         buf.writeBlockPos(pos);
                     });

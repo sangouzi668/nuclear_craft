@@ -115,7 +115,7 @@ public abstract class RocketLauncherWithAmmo extends Item {
 
     public void addAmmo(ItemStack ammo, ItemStack rocket, int itemSlot, Entity entityIn){
         if (getBoundedAmmo() != null){
-            // 修复1: 使用新的注册表系统比较物品
+            // Fix 1: Use new registry system to compare items
             if(ammo.getItem() == getBoundedAmmo()){
                 int n_ammo = getAmmoCount(rocket);
                 if (n_ammo < getMAX_AMMO()){
@@ -146,7 +146,7 @@ public abstract class RocketLauncherWithAmmo extends Item {
         playerEntity.getCooldowns().addCooldown(this, coolDown);
     }
     
-    // 辅助方法：获取物品的注册名（如果需要的话）
+    // Helper method: Get item registry name (if needed)
     protected ResourceLocation getItemRegistryName(Item item) {
         return BuiltInRegistries.ITEM.getKey(item);
     }

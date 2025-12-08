@@ -56,7 +56,7 @@ public class NukeExplosionHandler extends Entity {
         compound.putInt("age", this.age);
     }
 
-    // 修复1: 添加正确的泛型参数
+    // Fix 1: Add correct generic parameter
     @Override
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
@@ -126,7 +126,7 @@ public class NukeExplosionHandler extends Entity {
                     BlockPos interested = BlockPos.containing(this.getX() + dx, y - 1, this.getZ() + dz);
                 
                     if (Math.abs(y - this.getY()) < effectiveHeight) {
-                        // 简单的向下破坏几层方块（不区分材质）
+                        // Simple downward block destruction (no material distinction)
                         for (int i = 0; i < 3; i++) { // 只破坏3层
                             BlockPos targetPos = BlockPos.containing(this.getX() + dx, y - 1 - i, this.getZ() + dz);
                             BlockState blockState = level().getBlockState(targetPos);

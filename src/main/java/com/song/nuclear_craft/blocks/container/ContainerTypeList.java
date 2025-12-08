@@ -8,10 +8,10 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class ContainerTypeList {
-    // 创建 DeferredRegister
+    // Create DeferredRegister
     public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, NuclearCraft.MODID);
     
-    // 使用 RegistryObject 注册容器类型
+    // Register container type using RegistryObject
     public static final RegistryObject<MenuType<C4BombContainer>> C4_BOMB_CONTAINER_TYPE = CONTAINERS.register("c4_bomb_container", 
         () -> IForgeMenuType.create((windowId, inv, data) -> new C4BombContainer(windowId, inv, data)));
 }

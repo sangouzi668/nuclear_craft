@@ -18,7 +18,7 @@ public class ScopeZoomGui implements Renderable {
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-        // 使用新的 render 方法
+        // Use new render method
         drawGuiContainerBackgroundLayer(guiGraphics, 0, 0, guiGraphics.guiWidth(), guiGraphics.guiHeight());
     }
 
@@ -26,13 +26,13 @@ public class ScopeZoomGui implements Renderable {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         assert this.mc != null;
         
-        // 使用 GuiGraphics 的 blit 方法
+        // Use GuiGraphics blit method
         guiGraphics.blit(ZOOM_TEXTURE, 0, 0, 0, 0, xSize, ySize, xSize, ySize);
     }
     
-    // 为了向后兼容，保留 PoseStack 版本的方法
+    // Keep PoseStack version method for backward compatibility
     public void drawGuiContainerBackgroundLayer(PoseStack matrixStack, int i, int j, int xSize, int ySize) {
-        // 创建一个临时的 GuiGraphics 来调用新版本的方法
+        // Create a temporary GuiGraphics to call the new version method
         GuiGraphics guiGraphics = new GuiGraphics(Minecraft.getInstance(), Minecraft.getInstance().renderBuffers().bufferSource());
         drawGuiContainerBackgroundLayer(guiGraphics, i, j, xSize, ySize);
     }

@@ -1,7 +1,7 @@
 package com.song.nuclear_craft;
 
 import com.song.nuclear_craft.blocks.BlockList;
-import com.song.nuclear_craft.blocks.container.ContainerTypeList; // 确保导入正确
+import com.song.nuclear_craft.blocks.container.ContainerTypeList; // Ensure correct import
 import com.song.nuclear_craft.blocks.tileentity.TileEntityRegister;
 import com.song.nuclear_craft.client.ClientSetup;
 import com.song.nuclear_craft.effects.EffectRegister;
@@ -52,8 +52,8 @@ public class NuclearCraft
         .title(Component.translatable("itemGroup.weapons"))
         .icon(() -> new ItemStack(ItemList.ATOMIC_BOMB_ROCKET.get()))
         .displayItems((pParameters, pOutput) -> {
-            // 手动添加物品到物品组
-            // 武器
+            // Manually add items to item group
+            // Weapons
             pOutput.accept(ItemList.ROCKET_LAUNCHER.get());
             pOutput.accept(ItemList.ROCKET_LAUNCHER_ATOMIC_BOMB.get());
             pOutput.accept(ItemList.ROCKET_LAUNCHER_INCENDIARY.get());
@@ -72,27 +72,27 @@ public class NuclearCraft
             pOutput.accept(ItemList.NOVA.get());
             pOutput.accept(ItemList.P90.get());
             
-            // 拆弹器
+            // Defuse kits
             pOutput.accept(ItemList.WOOD_DEFUSE_KIT.get());
             pOutput.accept(ItemList.IRON_DEFUSE_KIT.get());
             pOutput.accept(ItemList.GOLD_DEFUSE_KIT.get());
             pOutput.accept(ItemList.DIAMOND_DEFUSE_KIT.get());
             pOutput.accept(ItemList.NETHERITE_DEFUSE_KIT.get());
             
-            // 火箭
+            // Rockets
             pOutput.accept(ItemList.ATOMIC_BOMB_ROCKET.get());
             pOutput.accept(ItemList.INCENDIARY_ROCKET.get());
             pOutput.accept(ItemList.SMOKE_ROCKET.get());
             pOutput.accept(ItemList.HIGH_EXPLOSIVE_ROCKET.get());
             pOutput.accept(ItemList.WATER_DROP_ROCKET.get());
             
-            // C4炸弹
+            // C4 Bombs
             pOutput.accept(ItemList.C4_ATOMIC_BOMB.get());
             pOutput.accept(ItemList.C4_HIGH_EXPLOSIVE.get());
             pOutput.accept(ItemList.C4_INCENDIARY.get());
             pOutput.accept(ItemList.C4_SMOKE.get());
             
-            // 雕像
+            // Statues
             pOutput.accept(ItemList.STATUE_OF_LIBERTY.get());
             pOutput.accept(ItemList.STATUE_OF_RIFLE_AMMO.get());
             pOutput.accept(ItemList.STATUE_OF_SHOTGUN_AMMO.get());
@@ -105,7 +105,7 @@ public class NuclearCraft
         .title(Component.translatable("itemGroup.bullets"))
         .icon(() -> new ItemStack(ItemList.AMMO_REGISTRIES_TYPE.get(AmmoSize.SIZE_127).get(AmmoType.NORMAL).get()))
         .displayItems((pParameters, pOutput) -> {
-            // 手动添加弹药到物品组
+            // Manually add ammo to item group
             for (AmmoSize ammoSize : AmmoSize.values()) {
                 if (ItemList.AMMO_REGISTRIES_TYPE.containsKey(ammoSize)) {
                     for (AmmoType ammoType : AmmoType.values()) {
@@ -116,7 +116,7 @@ public class NuclearCraft
                 }
             }
             
-            // 添加散弹
+            // Add birdshot
             for (AmmoType ammoType : ItemList.BIRD_SHOT_MAP.keySet()) {
                 pOutput.accept(ItemList.BIRD_SHOT_MAP.get(ammoType).get());
             }
@@ -124,7 +124,7 @@ public class NuclearCraft
         .build();
 
     public NuclearCraft(FMLJavaModLoadingContext context, ModLoadingContext modLoadingContext) {
-        // 注册事件监听器
+        // Register event listeners
         context.getModEventBus().addListener(this::setup);
         context.getModEventBus().addListener(this::enqueueIMC);
         context.getModEventBus().addListener(this::processIMC);
@@ -132,7 +132,7 @@ public class NuclearCraft
 
         MinecraftForge.EVENT_BUS.register(this);
 
-        // 注册所有 DeferredRegisters
+        // Register all DeferredRegisters
         EntityRegister.ENTITIES.register(context.getModEventBus());
         ParticleRegister.PARTICLES.register(context.getModEventBus());
         ItemList.ITEMS.register(context.getModEventBus());

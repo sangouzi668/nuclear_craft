@@ -8,11 +8,11 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class SoundEventList {
-    // 创建延迟注册器（推荐方式）
+    // Create deferred register (recommended way)
     public static final DeferredRegister<SoundEvent> SOUND_EVENTS = 
         DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, NuclearCraft.MODID);
     
-    // 注册所有声音事件
+    // Register all sound events
     public static final RegistryObject<SoundEvent> BOMB_PLANTED = 
         registerSoundEvent("bomb_planted");
     public static final RegistryObject<SoundEvent> C4_BEEP = 
@@ -62,13 +62,13 @@ public class SoundEventList {
     public static final RegistryObject<SoundEvent> DEFUSED = 
         registerSoundEvent("defused");
     
-    // 辅助注册方法
+    // Helper registration method
     private static RegistryObject<SoundEvent> registerSoundEvent(String name) {
         return SOUND_EVENTS.register(name, () -> 
             SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(NuclearCraft.MODID, name)));
     }
     
-    // 旧式直接创建方法（不推荐，仅作参考）
+    // Old-style direct creation method (not recommended, for reference only)
     /*
     public static SoundEvent BOMB_PLANTED = 
         SoundEvent.createVariableRangeEvent(new ResourceLocation(NuclearCraft.MODID, "bomb_planted"));

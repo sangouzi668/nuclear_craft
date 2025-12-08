@@ -29,7 +29,7 @@ public class Rocket extends Item {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         for(int l=0; l<this.tooltipLines; l++){
-            // 修复：使用新的注册表系统获取物品注册名
+            // Fix: Use new registry system to get item registry name
             ResourceLocation registryName = ForgeRegistries.ITEMS.getKey(this);
             tooltip.add(Component.translatable(String.format("tooltip.%s.%s.line%d", NuclearCraft.MODID,
                     registryName != null ? registryName.getPath() : "unknown", l)));

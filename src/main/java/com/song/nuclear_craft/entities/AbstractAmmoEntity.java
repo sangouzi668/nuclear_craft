@@ -114,7 +114,7 @@ public class AbstractAmmoEntity extends ThrowableItemProjectile {
 
         isMyImpact = true;
         if (!level().isClientSide) {
-            // 修复1: 使用正确的 getHitResult 方法 - 简化版本
+            // Fix 1: Use correct getHitResult method - simplified version
             Vec3 startVec = this.position();
             Vec3 endVec = startVec.add(this.getDeltaMovement());
             Predicate<Entity> filter = entity -> !entity.isSpectator() && entity.isAlive() && entity.isPickable() && canHitEntity(entity);
@@ -171,7 +171,7 @@ public class AbstractAmmoEntity extends ThrowableItemProjectile {
         }
 
         double damage = this.baseDamage * getEnergy(this.getDeltaMovement().length()) / this.initEnergy;
-        // 修复2: 使用正确的 DamageSource 创建方式
+        // Fix 2: Use correct DamageSource creation method
         Entity owner = this.getOwner();
         DamageSource damageSource;
         if (owner instanceof LivingEntity) {

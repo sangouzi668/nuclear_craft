@@ -45,7 +45,7 @@ public class NuclearCommand {
     private static void spawnIncendiaryExplosion(Level world, Player player) {
         Random random = new Random();
         
-        // 在玩家头顶10-15格的10x10范围内随机位置
+        // Random position within 10x10 range, 10-15 blocks above the player
         double offsetX = (random.nextDouble() - 0.5) * 10;
         double offsetZ = (random.nextDouble() - 0.5) * 10;
         double yOffset = random.nextDouble() * 5 + 10;
@@ -54,7 +54,7 @@ public class NuclearCommand {
         double y = player.getY() + yOffset;
         double z = player.getZ() + offsetZ;
         
-        // 直接调用燃烧爆炸方法，不需要实体
+        // Directly call incendiary explosion method, no entity needed
         double validY = IncendiaryRocketEntity.getValidY(world, x, y, z);
         IncendiaryRocketEntity.fireExplode(world, x, validY, z);
     }

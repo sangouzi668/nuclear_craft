@@ -82,7 +82,7 @@ public class ExplosionUtils{
             }
         }
         playNukeSound(world, x, y, z, radius);
-        // 修复1: 使用新的 Explosion.BlockInteraction 枚举值
+        // Fix 1: Use new Explosion.BlockInteraction enum value
         world.explode(entity, x, y, z, radius*0.8f, Level.ExplosionInteraction.BLOCK);
         return nukeExplosion;
     }
@@ -102,7 +102,7 @@ public class ExplosionUtils{
             for(int j=-intensity; j<intensity+1; j++){
                 for(int k=-intensity; k<1; k++){
                     if(Math.sqrt(i*i+j*j+k*k) < (double)intensity +0.1){
-                        // 修复2: 使用新的 Explosion.BlockInteraction 枚举值
+                        // Fix 2: Use new Explosion.BlockInteraction enum value
                         world.explode(entity, x + hf_rd * i, y + hf_rd * k, z + hf_rd * j, radius, Level.ExplosionInteraction.BLOCK);
                     }
                 }

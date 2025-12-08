@@ -23,7 +23,7 @@ public class UraniumCentrifugeContainer extends AbstractContainerMenu {
 
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
-        // 简单的快速移动实现，根据你的容器需求进行修改
+        // Simple quick move implementation, modify according to your container needs
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
         
@@ -31,8 +31,8 @@ public class UraniumCentrifugeContainer extends AbstractContainerMenu {
             ItemStack itemstack1 = slot.getItem();
             itemstack = itemstack1.copy();
             
-            // 这里需要根据你的容器布局实现具体的快速移动逻辑
-            // 这是一个基本模板，需要根据实际槽位数量调整
+            // Need to implement specific quick move logic based on your container layout here
+            // This is a basic template, needs adjustment based on actual slot count
             
             if (index < 36) {
                 // 从玩家物品栏移动到容器

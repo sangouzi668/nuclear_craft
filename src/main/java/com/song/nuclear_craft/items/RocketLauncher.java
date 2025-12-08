@@ -53,9 +53,9 @@ public class RocketLauncher extends RocketLauncherWithAmmo {
 
     @Override
     public void addAmmo(ItemStack ammo, ItemStack rocket, int itemSlot, Entity entityIn) {
-        // 修复1: 使用新的注册表系统获取注册名
+        // Fix 1: Use new registry system to get registry name
         ResourceLocation ammoRegistryName = ForgeRegistries.ITEMS.getKey(ammo.getItem());
-        // 或者使用原版注册表: ResourceLocation ammoRegistryName = BuiltInRegistries.ITEM.getKey(ammo.getItem());
+        // Or use vanilla registry: ResourceLocation ammoRegistryName = BuiltInRegistries.ITEM.getKey(ammo.getItem());
         
         ItemStack itemStack;
         if(ammo.getItem() == ItemList.ATOMIC_BOMB_ROCKET.get()){
