@@ -5,8 +5,8 @@
 		"1": "nuclear_craft:item/iron_texture7",
 		"2": "nuclear_craft:block/plastic2_black",
 		"3": "nuclear_craft:block/plastic1_gray",
-		"5": "nuclear_craft:materials/plastic_orange",
-		"6": "nuclear_craft:materials/plastic1_green",
+		"5": "nuclear_craft:item/plastic_orange_material",
+		"6": "nuclear_craft:item/plastic1_green_material",
 		"particle": "nuclear_craft:item/iron_texture2"
 	},
 	"elements": [

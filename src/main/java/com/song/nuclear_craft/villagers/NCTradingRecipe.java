@@ -52,25 +52,25 @@ public class NCTradingRecipe {
         if("null".equals(resItem1.get())){
             return null;
         }
-        return ForgeRegistries.ITEMS.getValue(new ResourceLocation(resItem1.get()));
+        return ForgeRegistries.ITEMS.getValue(ResourceLocation.tryParse(resItem1.get()));
     }
 
     public Item getItem2() {
         if("null".equals(resItem2.get())){
             return null;
         }
-        return ForgeRegistries.ITEMS.getValue(new ResourceLocation(resItem2.get()));
+        return ForgeRegistries.ITEMS.getValue(ResourceLocation.tryParse(resItem2.get()));
     }
 
     public Item getOutput() {
         if("null".equals(resOutput.get())){
             return null;
         }
-        return ForgeRegistries.ITEMS.getValue(new ResourceLocation(resOutput.get()));
+        return ForgeRegistries.ITEMS.getValue(ResourceLocation.tryParse(resOutput.get()));
     }
 
     public VillagerProfession getProfession() {
-        return ForgeRegistries.PROFESSIONS.getValue(new ResourceLocation(resProfession.get()));
+        return ForgeRegistries.VILLAGER_PROFESSIONS.getValue(ResourceLocation.tryParse(resProfession.get()));
     }
 
     public List<ItemStack> getInputStacks(){

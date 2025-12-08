@@ -12,7 +12,7 @@ import net.minecraft.world.item.Item.Properties;
 public class USP extends AbstractGunItem {
 
     public USP() {
-        super(new Properties().stacksTo(1).tab(NuclearCraft.ITEM_GROUP));
+        super(new Properties().stacksTo(1));
     }
 
     @Override

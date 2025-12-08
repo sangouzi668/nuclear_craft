@@ -30,7 +30,7 @@ public class GunLoadingPacket {
             NetworkEvent.Context context = ctx.get();
             PacketListener handler = context.getNetworkManager().getPacketListener();
             if (handler instanceof ServerGamePacketListenerImpl){
-                ServerLevel world = (ServerLevel) ((ServerGamePacketListenerImpl) handler).player.level;
+                ServerLevel world = (ServerLevel) ((ServerGamePacketListenerImpl) handler).player.level();
                 ServerPlayer playerEntity = ((ServerGamePacketListenerImpl) handler).player;
                 AbstractGunItem.tryLoadAmmo(world, playerEntity, packet.slot);
             }

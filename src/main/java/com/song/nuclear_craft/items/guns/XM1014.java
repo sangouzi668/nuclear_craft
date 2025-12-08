@@ -14,7 +14,7 @@ import net.minecraft.world.item.Item.Properties;
 
 public class XM1014 extends AbstractGunItem {
     public XM1014() {
-        super(new Properties().stacksTo(1).tab(NuclearCraft.ITEM_GROUP));
+        super(new Properties().stacksTo(1));
     }
 
     @Override

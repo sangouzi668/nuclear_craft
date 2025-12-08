@@ -1,9 +1,9 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"2": "nuclear_craft:materials/copper2",
-		"4": "nuclear_craft:materials/plastic2_red",
-		"particle": "nuclear_craft:materials/copper2"
+		"2": "nuclear_craft:item/copper2_material",
+		"4": "nuclear_craft:item/plastic2_red_material",
+		"particle": "nuclear_craft:item/copper2_material"
 	},
 	"elements": [
 		{

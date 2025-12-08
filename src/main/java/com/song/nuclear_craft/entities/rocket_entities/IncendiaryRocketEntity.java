@@ -47,18 +47,18 @@ public class IncendiaryRocketEntity extends FireworkRocketEntity {
     @Override
     protected void onHitEntity(EntityHitResult entityRayTraceResult) {
         this.setRemoved(RemovalReason.KILLED);
-        if (! level.isClientSide){
-            double validY = getValidY(level, this.getX(), this.getY(), this.getZ());
-            fireExplode(level, this.getX(), validY, this.getZ());
+        if (! level().isClientSide){
+            double validY = getValidY(level(), this.getX(), this.getY(), this.getZ());
+            fireExplode(level(), this.getX(), validY, this.getZ());
         }
     }
 
     @Override
     protected void onHitBlock(BlockHitResult blockRayTraceResult) {
         this.setRemoved(RemovalReason.KILLED);
-        if(! level.isClientSide){
-            double validY = getValidY(level, this.getX(), this.getY(), this.getZ());
-            fireExplode(level, this.getX(), validY, this.getZ());
+        if(! level().isClientSide){
+            double validY = getValidY(level(), this.getX(), this.getY(), this.getZ());
+            fireExplode(level(), this.getX(), validY, this.getZ());
         }
     }
 
@@ -79,7 +79,7 @@ public class IncendiaryRocketEntity extends FireworkRocketEntity {
 
     public static double getValidY(Level world, double x, double y, double z){
         for (double deltaY=5; deltaY > -5; deltaY--){
-            if (world.getBlockState(new BlockPos(x, y+deltaY, z)) == Blocks.AIR.defaultBlockState()){
+            if (world.getBlockState(BlockPos.containing(x, y + deltaY, z)).isAir()){
                 return y+deltaY;
             }
         }

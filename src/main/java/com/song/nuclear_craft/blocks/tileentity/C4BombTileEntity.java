@@ -9,9 +9,10 @@ import com.song.nuclear_craft.network.C4BombSynPacket;
 import com.song.nuclear_craft.network.NuclearCraftPacketHandler;
 import com.song.nuclear_craft.network.SoundPacket;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.MenuProvider;
@@ -125,12 +126,22 @@ public class C4BombTileEntity extends BlockEntity implements MenuProvider {
     }
 
     protected boolean entityStillDefusing(Entity entity){
-        if(entity instanceof LivingEntity){
-            return entity.blockPosition().closerThan(getBlockPos(), 5) && Objects.requireNonNull(((LivingEntity) entity).getItemInHand(InteractionHand.MAIN_HAND).getItem().getRegistryName()).toString().equals(defusingTool);
-        }
-        else {
+        if (!(entity instanceof LivingEntity) || defusingTool == null || defusingTool.isEmpty()) {
             return false;
         }
+
+        LivingEntity livingEntity = (LivingEntity) entity;
+        if (!entity.blockPosition().closerThan(getBlockPos(), 5)) {
+            return false;
+        }
+
+        var itemStack = livingEntity.getItemInHand(InteractionHand.MAIN_HAND);
+        if (itemStack.isEmpty()) {
+            return false;
+        }
+
+        ResourceLocation registryName = BuiltInRegistries.ITEM.getKey(itemStack.getItem());
+        return registryName != null && registryName.toString().equals(defusingTool);
     }
 
     protected void beDefused(){
@@ -169,7 +180,7 @@ public class C4BombTileEntity extends BlockEntity implements MenuProvider {
 
     @Override
     public Component getDisplayName() {
-        return new TranslatableComponent(String.format("menu.%s.c4_bomb.display_name", NuclearCraft.MODID));
+        return Component.translatable(String.format("menu.%s.c4_bomb.display_name", NuclearCraft.MODID));
     }
 
     @Override

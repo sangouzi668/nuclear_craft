@@ -9,7 +9,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -20,7 +19,7 @@ import java.util.List;
 public class RocketLauncherAtomicBomb extends RocketLauncherWithAmmo {
     private static final int MAX_AMMO=1;
     public RocketLauncherAtomicBomb() {
-        super(new Item.Properties().stacksTo(1).tab(NuclearCraft.ITEM_GROUP));
+        super(new Item.Properties().stacksTo(1));
         this.coolDown = 5;
     }
 
@@ -43,6 +42,6 @@ public class RocketLauncherAtomicBomb extends RocketLauncherWithAmmo {
     @OnlyIn(Dist.CLIENT)
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
-        tooltip.add(new TranslatableComponent(String.format("tooltip.%s.atomic_bomb_rocket.line0", NuclearCraft.MODID)).withStyle(ChatFormatting.GOLD));
+        tooltip.add(Component.translatable(String.format("tooltip.%s.atomic_bomb_rocket.line0", NuclearCraft.MODID)).withStyle(ChatFormatting.GOLD));
     }
 }

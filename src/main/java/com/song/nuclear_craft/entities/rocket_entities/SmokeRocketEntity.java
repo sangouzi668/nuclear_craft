@@ -64,8 +64,8 @@ public class SmokeRocketEntity extends FireworkRocketEntity {
 
     private void explode(){
         this.setRemoved(RemovalReason.KILLED);
-        if(!level.isClientSide){
-            sendSmokePacket(level, this.getX(), this.getY(), this.getZ());
+        if(!level().isClientSide){
+            sendSmokePacket(level(), this.getX(), this.getY(), this.getZ());
         }
     }
 
@@ -84,7 +84,7 @@ public class SmokeRocketEntity extends FireworkRocketEntity {
         for(double deltaX = -SMOKE_RADIUS; deltaX <= SMOKE_RADIUS; deltaX +=3){
             for(double deltaY = -SMOKE_RADIUS; deltaY <= SMOKE_RADIUS; deltaY +=3){
                 for(double deltaZ = -SMOKE_RADIUS; deltaZ <= SMOKE_RADIUS; deltaZ +=3){
-                    if ((deltaX*deltaX+deltaY*deltaY+deltaZ*deltaZ < SMOKE_RADIUS*SMOKE_RADIUS)&&(random.nextDouble()>0.7)&&(world.getBlockState(new BlockPos(x+deltaX, y+deltaY, z+deltaZ)))== Blocks.AIR.defaultBlockState()){
+                    if ((deltaX*deltaX+deltaY*deltaY+deltaZ*deltaZ < SMOKE_RADIUS*SMOKE_RADIUS) && (random.nextDouble() > 0.7) && (world.getBlockState(BlockPos.containing(x + deltaX, y + deltaY, z + deltaZ)).isAir())){
                         world.addParticle((ParticleOptions) ParticleRegister.BIG_SMOKE.get(), x+deltaX, y+deltaY, z+deltaZ, 0.03*(random.nextDouble()-0.5), 0.03*(random.nextDouble()-0.5), 0.03*(random.nextDouble()-0.5));
                     }
                 }

@@ -14,7 +14,7 @@ import net.minecraft.world.item.Item.Properties;
 
 public class P90 extends AbstractMachineGunItem{
     public P90() {
-        super(new Properties().stacksTo(1).tab(NuclearCraft.ITEM_GROUP));
+        super(new Properties().stacksTo(1));
     }
 
     @Override

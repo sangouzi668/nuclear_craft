@@ -4,7 +4,6 @@ import com.song.nuclear_craft.NuclearCraft;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -19,6 +18,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Properties;
 
 public class Statue extends HorizontalDirectionalBlock {
     protected static final VoxelShape SHAPE = Block.box(1.0D, 0.1D, 1.0D, 15.0D, 24.0D, 15.0D);
@@ -44,8 +44,8 @@ public class Statue extends HorizontalDirectionalBlock {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable BlockGetter worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(new TranslatableComponent(String.format("tooltip.%s.block.statue.line1", NuclearCraft.MODID)).withStyle(ChatFormatting.GRAY));
-        tooltip.add(new TranslatableComponent(String.format("tooltip.%s.block.statue.line2", NuclearCraft.MODID)).withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable(String.format("tooltip.%s.block.statue.line1", NuclearCraft.MODID)).withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable(String.format("tooltip.%s.block.statue.line2", NuclearCraft.MODID)).withStyle(ChatFormatting.GRAY));
     }
 
     @Override

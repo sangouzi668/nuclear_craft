@@ -54,7 +54,7 @@ public class C4BombSynPacket {
         ctx.get().enqueueWork(()-> DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
 //            NetworkEvent.Context context = ctx.get();
 //            INetHandler handler = context.getNetworkManager().getNetHandler();
-            BlockEntity entity = Minecraft.getInstance().level.getBlockEntity(new BlockPos(packet.x, packet.y, packet.z));
+            BlockEntity entity = Minecraft.getInstance().level.getBlockEntity(BlockPos.containing(packet.x, packet.y, packet.z));
             if (entity instanceof C4BombTileEntity){
                 ((C4BombTileEntity) entity).setAttr(packet.inputPanel, packet.fuse_age, packet.explode_time, packet.is_active);
             }

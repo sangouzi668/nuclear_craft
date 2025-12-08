@@ -50,10 +50,10 @@ public class ExplosionUtils{
             for (int dy = -y_lim; dy < y_lim + 1; dy++) {
                 int z_lim = (int) Math.sqrt(radius_int*radius_int-dx*dx-dy*dy*Y_SHORTEN*Y_SHORTEN);
                 for (int dz = -z_lim; dz < z_lim + 1; dz++) {
-                    BlockPos blockPos = new BlockPos(x + dx, y + dy, z + dz);
+                    BlockPos blockPos = BlockPos.containing(x + dx, y + dy, z + dz);
                     BlockState blockState = world.getBlockState(blockPos);
                     double power = getBlastPower(Math.sqrt(dx*dx+dy*dy*Y_SHORTEN*Y_SHORTEN+dz*dz), radius);
-                    if (blockState!= Blocks.AIR.defaultBlockState() && ((power>1) ||(power > new Random().nextDouble()))){
+                    if (blockState != Blocks.AIR.defaultBlockState() && ((power>1) ||(power > new Random().nextDouble()))){
                         float resistance = blockState.getBlock().getExplosionResistance();
                         if (resistance < max_blast_power) {
                             affectedBlockPositions.add(blockPos);
@@ -82,8 +82,8 @@ public class ExplosionUtils{
             }
         }
         playNukeSound(world, x, y, z, radius);
-        // normal explosion
-        world.explode(entity, x, y, z, radius*0.8f, Explosion.BlockInteraction.BREAK);
+        // 修复1: 使用新的 Explosion.BlockInteraction 枚举值
+        world.explode(entity, x, y, z, radius*0.8f, Level.ExplosionInteraction.BLOCK);
         return nukeExplosion;
     }
 
@@ -102,7 +102,8 @@ public class ExplosionUtils{
             for(int j=-intensity; j<intensity+1; j++){
                 for(int k=-intensity; k<1; k++){
                     if(Math.sqrt(i*i+j*j+k*k) < (double)intensity +0.1){
-                        world.explode(entity, x + hf_rd * i, y + hf_rd * k, z + hf_rd * j, radius, Explosion.BlockInteraction.BREAK);
+                        // 修复2: 使用新的 Explosion.BlockInteraction 枚举值
+                        world.explode(entity, x + hf_rd * i, y + hf_rd * k, z + hf_rd * j, radius, Level.ExplosionInteraction.BLOCK);
                     }
                 }
             }

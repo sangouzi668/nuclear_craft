@@ -2,8 +2,9 @@ package com.song.nuclear_craft.items;
 
 import com.song.nuclear_craft.NuclearCraft;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -15,6 +16,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -24,7 +26,7 @@ import java.util.Objects;
 public class RocketLauncher extends RocketLauncherWithAmmo {
 
     public RocketLauncher() {
-        super(new Item.Properties().stacksTo(1).tab(NuclearCraft.ITEM_GROUP));
+        super(new Item.Properties().stacksTo(1));
     }
 
     @Override
@@ -46,12 +48,15 @@ public class RocketLauncher extends RocketLauncherWithAmmo {
     @Override
     @OnlyIn(Dist.CLIENT)
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(new TranslatableComponent(String.format("item.%s.rocket_launcher.tooltip", NuclearCraft.MODID)).withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable(String.format("item.%s.rocket_launcher.tooltip", NuclearCraft.MODID)).withStyle(ChatFormatting.GRAY));
     }
 
     @Override
     public void addAmmo(ItemStack ammo, ItemStack rocket, int itemSlot, Entity entityIn) {
-        String ammoRegistryName = Objects.requireNonNull(ammo.getItem().getRegistryName()).toString();
+        // 修复1: 使用新的注册表系统获取注册名
+        ResourceLocation ammoRegistryName = ForgeRegistries.ITEMS.getKey(ammo.getItem());
+        // 或者使用原版注册表: ResourceLocation ammoRegistryName = BuiltInRegistries.ITEM.getKey(ammo.getItem());
+        
         ItemStack itemStack;
         if(ammo.getItem() == ItemList.ATOMIC_BOMB_ROCKET.get()){
             itemStack = new ItemStack(ItemList.ROCKET_LAUNCHER_ATOMIC_BOMB.get());

@@ -3,46 +3,50 @@ package com.song.nuclear_craft.blocks.container;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.song.nuclear_craft.NuclearCraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 
 public class C4BombContainerScreen extends AbstractContainerScreen<C4BombContainer> {
     public int i;
     public int j;
 
-    private static final ResourceLocation C4_GUI_TEXTURES = new ResourceLocation(NuclearCraft.MODID, "textures/gui/container/c4_bomb_container.png");
+    private static final ResourceLocation C4_GUI_TEXTURES = ResourceLocation.fromNamespaceAndPath(NuclearCraft.MODID, "textures/gui/container/c4_bomb_container.png");
 
     public C4BombContainerScreen(C4BombContainer screenContainer, Inventory inv, Component titleIn) {
         super(screenContainer, inv, titleIn);
+        // 设置GUI大小，只显示C4专用部分，不包括玩家背包
+        this.imageWidth = 176; // 根据GUI纹理的实际宽度调整
+        this.imageHeight = 166; // 根据GUI纹理的实际高度调整
     }
 
     @Override
-    protected void renderBg(PoseStack matrixStack, float partialTicks, int mouse_x, int mouse_y) {
+    protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouse_x, int mouse_y) {
         i = (this.width - this.imageWidth) / 2;
         j = (this.height - this.imageHeight) / 2;
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        assert this.minecraft != null;
-//        this.minecraft.getTextureManager().bindForSetup(C4_GUI_TEXTURES);
-        RenderSystem.setShaderTexture(0, C4_GUI_TEXTURES);
-        this.blit(matrixStack, i, j, 0, 0, this.imageWidth, this.imageHeight);
-
+        guiGraphics.blit(C4_GUI_TEXTURES, i, j, 0, 0, this.imageWidth, this.imageHeight);
     }
 
     @Override
-    protected void renderLabels(PoseStack matrixStack, int x, int y) {
-//        this.font.draw(matrixStack, this.title, 33, 28, 4210752);
-        this.font.draw(matrixStack, this.menu.tileEntity.inputPanel+" s", 83f, 13f, 4210752);
-        if (this.menu.tileEntity.isActive()){
-            this.font.draw(matrixStack, new TranslatableComponent("menu."+NuclearCraft.MODID+".c4_bomb.counter").getString()+this.menu.tileEntity.getCounter()+" s", 33f, 33f, 4210752);
+    protected void renderLabels(GuiGraphics guiGraphics, int x, int y) {
+        PoseStack poseStack = guiGraphics.pose();
+        // 使用 GuiGraphics 的 drawString 方法
+        guiGraphics.drawString(this.font, this.menu.tileEntity.inputPanel + " s", 83, 13, 4210752, false);
+        
+        if (this.menu.tileEntity.isActive()) {
+            guiGraphics.drawString(this.font, 
+                Component.translatable("menu." + NuclearCraft.MODID + ".c4_bomb.counter").getString() + 
+                this.menu.tileEntity.getCounter() + " s", 33, 33, 4210752, false);
         }
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(matrixStack);
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(guiGraphics);
+        super.render(guiGraphics, mouseX, mouseY, partialTicks);
+        this.renderTooltip(guiGraphics, mouseX, mouseY);
     }
 }

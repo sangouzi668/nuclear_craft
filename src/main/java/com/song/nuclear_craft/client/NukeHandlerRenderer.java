@@ -6,7 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 
 public class NukeHandlerRenderer extends EntityRenderer<Entity> {
-    private static final ResourceLocation DUMMY = new ResourceLocation("textures/entity/zombie/zombie.png");
+    private static final ResourceLocation DUMMY = ResourceLocation.tryParse("textures/entity/zombie/zombie.png");
     protected NukeHandlerRenderer(EntityRendererProvider.Context p_174008_) {
         super(p_174008_);
     }

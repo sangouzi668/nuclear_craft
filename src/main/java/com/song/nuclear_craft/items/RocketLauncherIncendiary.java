@@ -10,7 +10,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -22,7 +21,7 @@ public class RocketLauncherIncendiary extends RocketLauncherWithAmmo{
     private static final int MAX_AMMO = ConfigCommon.INCENDIARY_MAX_AMMO.get();
 
     public RocketLauncherIncendiary() {
-        super(new Item.Properties().stacksTo(1).tab(NuclearCraft.ITEM_GROUP));
+        super(new Item.Properties().stacksTo(1));
         this.coolDown = 5;
     }
 
@@ -45,6 +44,6 @@ public class RocketLauncherIncendiary extends RocketLauncherWithAmmo{
     @OnlyIn(Dist.CLIENT)
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
-        tooltip.add(new TranslatableComponent(String.format("tooltip.%s.incendiary_rocket.line0", NuclearCraft.MODID)).withStyle(ChatFormatting.GOLD));
+        tooltip.add(Component.translatable(String.format("tooltip.%s.incendiary_rocket.line0", NuclearCraft.MODID)).withStyle(ChatFormatting.GOLD));
     }
 }

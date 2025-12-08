@@ -5,7 +5,7 @@ import com.song.nuclear_craft.misc.ConfigCommon;
 
 public class WoodDefuseKit extends DefuseKit{
     public WoodDefuseKit() {
-        super(new Properties().stacksTo(1).tab(NuclearCraft.ITEM_GROUP).durability(5));
+        super(new Properties().stacksTo(1).durability(5));
     }
 
     @Override

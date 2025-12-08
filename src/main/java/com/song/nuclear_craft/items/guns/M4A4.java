@@ -10,7 +10,7 @@ import net.minecraft.world.item.Item.Properties;
 
 public class M4A4 extends AbstractGunItem{
     public M4A4(){
-        super(new Properties().stacksTo(1).tab(NuclearCraft.ITEM_GROUP));
+        super(new Properties().stacksTo(1));
     }
 
     @Override

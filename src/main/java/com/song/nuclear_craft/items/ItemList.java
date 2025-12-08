@@ -23,11 +23,11 @@ public class ItemList {
     public static final RegistryObject<Item> DEBUG_STICK = ITEMS.register("debug_stick", DebugStick::new);
 
     // Rockets
-    public static final RegistryObject<Item> ATOMIC_BOMB_ROCKET = ITEMS.register("atomic_bomb_rocket", ()->new Rocket(new Item.Properties().tab(NuclearCraft.ITEM_GROUP).stacksTo(1), 1));
-    public static final RegistryObject<Item> INCENDIARY_ROCKET = ITEMS.register("incendiary_rocket", ()->new Rocket(new Item.Properties().tab(NuclearCraft.ITEM_GROUP), 1));
-    public static final RegistryObject<Item> SMOKE_ROCKET = ITEMS.register("smoke_rocket", ()->new Rocket(new Item.Properties().tab(NuclearCraft.ITEM_GROUP), 1));
-    public static final RegistryObject<Item> HIGH_EXPLOSIVE_ROCKET = ITEMS.register("high_explosive_rocket", ()->new Rocket(new Item.Properties().tab(NuclearCraft.ITEM_GROUP), 1));
-    public static final RegistryObject<Item> WATER_DROP_ROCKET = ITEMS.register("water_drop_rocket", ()->new Rocket(new Item.Properties().tab(NuclearCraft.ITEM_GROUP), 1));
+    public static final RegistryObject<Item> ATOMIC_BOMB_ROCKET = ITEMS.register("atomic_bomb_rocket", ()->new Rocket(new Item.Properties().stacksTo(1), 1));
+    public static final RegistryObject<Item> INCENDIARY_ROCKET = ITEMS.register("incendiary_rocket", ()->new Rocket(new Item.Properties(), 1));
+    public static final RegistryObject<Item> SMOKE_ROCKET = ITEMS.register("smoke_rocket", ()->new Rocket(new Item.Properties(), 1));
+    public static final RegistryObject<Item> HIGH_EXPLOSIVE_ROCKET = ITEMS.register("high_explosive_rocket", ()->new Rocket(new Item.Properties(), 1));
+    public static final RegistryObject<Item> WATER_DROP_ROCKET = ITEMS.register("water_drop_rocket", ()->new Rocket(new Item.Properties(), 1));
 
     //Rocket Launchers
     public static final RegistryObject<RocketLauncher> ROCKET_LAUNCHER = ITEMS.register("rocket_launcher", RocketLauncher::new);
@@ -38,17 +38,17 @@ public class ItemList {
     public static final RegistryObject<RocketLauncherWaterDrop> ROCKET_LAUNCHER_WATER_DROP = ITEMS.register("rocket_launcher_water_drop", RocketLauncherWaterDrop::new);
 
     // C4 Bombs
-    public static final RegistryObject<Item> C4_ATOMIC_BOMB = ITEMS.register("c4_atomic_bomb", () -> new C4BombItem(BlockList.C4_ATOMIC_BOMB.get(), new Item.Properties().tab(NuclearCraft.ITEM_GROUP)));
-    public static final RegistryObject<Item> C4_HIGH_EXPLOSIVE = ITEMS.register("c4_high_explosive", () -> new C4BombItem(BlockList.C4_HIGH_EXPLOSIVE.get(), new Item.Properties().tab(NuclearCraft.ITEM_GROUP)));
-    public static final RegistryObject<Item> C4_INCENDIARY = ITEMS.register("c4_incendiary", () -> new C4BombItem(BlockList.C4_INCENDIARY.get(), new Item.Properties().tab(NuclearCraft.ITEM_GROUP)));
-    public static final RegistryObject<Item> C4_SMOKE = ITEMS.register("c4_smoke", () -> new C4BombItem(BlockList.C4_SMOKE.get(), new Item.Properties().tab(NuclearCraft.ITEM_GROUP)));
+    public static final RegistryObject<Item> C4_ATOMIC_BOMB = ITEMS.register("c4_atomic_bomb", () -> new C4BombItem(BlockList.C4_ATOMIC_BOMB.get(), new Item.Properties()));
+    public static final RegistryObject<Item> C4_HIGH_EXPLOSIVE = ITEMS.register("c4_high_explosive", () -> new C4BombItem(BlockList.C4_HIGH_EXPLOSIVE.get(), new Item.Properties()));
+    public static final RegistryObject<Item> C4_INCENDIARY = ITEMS.register("c4_incendiary", () -> new C4BombItem(BlockList.C4_INCENDIARY.get(), new Item.Properties()));
+    public static final RegistryObject<Item> C4_SMOKE = ITEMS.register("c4_smoke", () -> new C4BombItem(BlockList.C4_SMOKE.get(), new Item.Properties()));
 
     // Statues
-    public static final RegistryObject<Item> STATUE_OF_LIBERTY = ITEMS.register("statue_of_liberty", ()->new BlockItem(BlockList.STATUE_OF_LIBERTY.get(), new Item.Properties().tab(NuclearCraft.ITEM_GROUP)));
-    public static final RegistryObject<Item> STATUE_OF_RIFLE_AMMO = ITEMS.register("statue_of_rifle_ammo", ()->new BlockItem(BlockList.STATUE_OF_RIFLE_AMMO.get(), new Item.Properties().tab(NuclearCraft.ITEM_GROUP)));
-    public static final RegistryObject<Item> STATUE_OF_SHOTGUN_AMMO = ITEMS.register("statue_of_shotgun_ammo", ()->new BlockItem(BlockList.STATUE_OF_SHOTGUN_AMMO.get(), new Item.Properties().tab(NuclearCraft.ITEM_GROUP)));
-    public static final RegistryObject<Item> STATUE_OF_ROCKET = ITEMS.register("statue_of_rocket", ()->new BlockItem(BlockList.STATUE_OF_ROCKET.get(), new Item.Properties().tab(NuclearCraft.ITEM_GROUP)));
-    public static final RegistryObject<Item> STATUE_OF_EXPLOSIVE = ITEMS.register("statue_of_explosive", ()->new BlockItem(BlockList.STATUE_OF_EXPLOSIVE.get(), new Item.Properties().tab(NuclearCraft.ITEM_GROUP)));
+    public static final RegistryObject<Item> STATUE_OF_LIBERTY = ITEMS.register("statue_of_liberty", ()->new BlockItem(BlockList.STATUE_OF_LIBERTY.get(), new Item.Properties()));
+    public static final RegistryObject<Item> STATUE_OF_RIFLE_AMMO = ITEMS.register("statue_of_rifle_ammo", ()->new BlockItem(BlockList.STATUE_OF_RIFLE_AMMO.get(), new Item.Properties()));
+    public static final RegistryObject<Item> STATUE_OF_SHOTGUN_AMMO = ITEMS.register("statue_of_shotgun_ammo", ()->new BlockItem(BlockList.STATUE_OF_SHOTGUN_AMMO.get(), new Item.Properties()));
+    public static final RegistryObject<Item> STATUE_OF_ROCKET = ITEMS.register("statue_of_rocket", ()->new BlockItem(BlockList.STATUE_OF_ROCKET.get(), new Item.Properties()));
+    public static final RegistryObject<Item> STATUE_OF_EXPLOSIVE = ITEMS.register("statue_of_explosive", ()->new BlockItem(BlockList.STATUE_OF_EXPLOSIVE.get(), new Item.Properties()));
 
     // Guns and bullets
     public static final RegistryObject<DesertEagle> DESERT_EAGLE = ITEMS.register("desert_eagle", DesertEagle::new);
@@ -79,7 +79,7 @@ public class ItemList {
             HashMap<AmmoType, RegistryObject<AbstractAmmo>> tmp = new HashMap<>();
             for (AmmoType ammoType: AmmoPossibleCombination.RIFLE_AMMO.getAmmoTypes()){
                 tmp.put(ammoType, ITEMS.register(getAmmoRegisterString(ammoSize, ammoType),
-                        ()->new AbstractAmmo(new Item.Properties().tab(NuclearCraft.AMMO_ITEM_GROUP), ammoSize, ammoType)));
+                        ()->new AbstractAmmo(new Item.Properties(), ammoSize, ammoType)));
             }
             AMMO_REGISTRIES_TYPE.put(ammoSize, tmp);
         }
@@ -88,7 +88,7 @@ public class ItemList {
             HashMap<AmmoType, RegistryObject<AbstractAmmo>> tmp = new HashMap<>();
             for (AmmoType ammoType: AmmoPossibleCombination.SHOTGUN_AMMO.getAmmoTypes()){
                 tmp.put(ammoType, ITEMS.register(getAmmoRegisterString(ammoSize, ammoType),
-                        ()->new AbstractAmmo(new Item.Properties().tab(NuclearCraft.AMMO_ITEM_GROUP), ammoSize, ammoType, 1)));
+                        ()->new AbstractAmmo(new Item.Properties(), ammoSize, ammoType, 1)));
             }
             AMMO_REGISTRIES_TYPE.put(ammoSize, tmp);
         }

@@ -30,8 +30,8 @@ public class AmmoExplosiveEntity extends AbstractAmmoEntity {
             return;
         }
         teleportToHitPoint(result);
-        if (!level.isClientSide){
-            ExplosionUtils.oldNukeExplode(level, this, this.getX(), this.getY(), this.getZ(), 5, false, 20);
+        if (!level().isClientSide){
+            ExplosionUtils.oldNukeExplode(level(), this, this.getX(), this.getY(), this.getZ(), 5, false, 20);
         }
         this.setRemoved(RemovalReason.KILLED);
     }

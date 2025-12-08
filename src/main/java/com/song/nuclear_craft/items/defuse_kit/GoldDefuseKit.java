@@ -7,7 +7,7 @@ import net.minecraft.world.item.Item.Properties;
 
 public class GoldDefuseKit extends DefuseKit{
     public GoldDefuseKit() {
-        super(new Properties().stacksTo(1).tab(NuclearCraft.ITEM_GROUP).durability(1));
+        super(new Properties().stacksTo(1).durability(1));
     }
 
     @Override

@@ -7,7 +7,7 @@ import net.minecraft.world.item.Item.Properties;
 
 public class IronDefuseKit extends DefuseKit{
     public IronDefuseKit() {
-        super(new Properties().stacksTo(1).tab(NuclearCraft.ITEM_GROUP).durability(20));
+        super(new Properties().stacksTo(1).durability(20));
     }
 
     @Override

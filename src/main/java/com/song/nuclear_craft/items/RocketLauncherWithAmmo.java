@@ -1,6 +1,7 @@
 package com.song.nuclear_craft.items;
 
 import com.song.nuclear_craft.NuclearCraft;
+import com.song.nuclear_craft.client.ClientSetup;
 import com.song.nuclear_craft.events.ClientEventForgeSubscriber;
 import com.song.nuclear_craft.network.GunLoadingPacket;
 import com.song.nuclear_craft.network.NuclearCraftPacketHandler;
@@ -9,8 +10,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -23,6 +22,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.PacketDistributor;
 
 import javax.annotation.Nonnull;
@@ -32,6 +33,7 @@ import java.util.List;
 public abstract class RocketLauncherWithAmmo extends Item {
     private static final int MAX_AMMO = 10;
     protected int coolDown = 0;
+    
     public RocketLauncherWithAmmo(Properties properties) {
         super(properties);
     }
@@ -107,20 +109,21 @@ public abstract class RocketLauncherWithAmmo extends Item {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         int n_ammo = getAmmoCount(stack);
-        tooltip.add(new TranslatableComponent(String.format("item.%s.rocket_launcher.ammo_left", NuclearCraft.MODID)).withStyle(ChatFormatting.GRAY));
-        tooltip.add(new TextComponent(""+n_ammo).withStyle(ChatFormatting.GOLD));
+        tooltip.add(Component.translatable(String.format("item.%s.rocket_launcher.ammo_left", NuclearCraft.MODID)).withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable(""+n_ammo).withStyle(ChatFormatting.GOLD));
     }
 
     public void addAmmo(ItemStack ammo, ItemStack rocket, int itemSlot, Entity entityIn){
         if (getBoundedAmmo() != null){
-            if(ammo.getItem().getRegistryName().equals(getBoundedAmmo().getRegistryName())){
+            // 修复1: 使用新的注册表系统比较物品
+            if(ammo.getItem() == getBoundedAmmo()){
                 int n_ammo = getAmmoCount(rocket);
-                if (n_ammo<getMAX_AMMO()){
-                    int n_loaded = Math.min(getMAX_AMMO()-n_ammo, ammo.getCount());
+                if (n_ammo < getMAX_AMMO()){
+                    int n_loaded = Math.min(getMAX_AMMO() - n_ammo, ammo.getCount());
                     ammo.shrink(n_loaded);
                     addAmmoCount(rocket, n_loaded);
                     BlockPos pos = entityIn.blockPosition();
-                    NuclearCraftPacketHandler.C4_SETTING_CHANNEL.send(PacketDistributor.NEAR.with(PacketDistributor.TargetPoint.p(pos.getX(), pos.getY(), pos.getZ(), 20, entityIn.level.dimension())),
+                    NuclearCraftPacketHandler.C4_SETTING_CHANNEL.send(PacketDistributor.NEAR.with(PacketDistributor.TargetPoint.p(pos.getX(), pos.getY(), pos.getZ(), 20, entityIn.level().dimension())),
                             new SoundPacket(pos, "rocket_load"));
                     ((Player) entityIn).getCooldowns().addCooldown(rocket.getItem(), 20);
                 }
@@ -133,20 +136,18 @@ public abstract class RocketLauncherWithAmmo extends Item {
         // loading ammo
         super.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
         if(isSelected && worldIn.isClientSide){
-            if(ClientEventForgeSubscriber.gunReload.consumeClick() && (entityIn instanceof Player)){
+            if(ClientSetup.gunReload.consumeClick() && (entityIn instanceof Player)){
                 NuclearCraftPacketHandler.KEY_BIND.sendToServer(new GunLoadingPacket(itemSlot));
             }
         }
-//        if(isSelected && !worldIn.isRemote && ClientEventForgeSubscriber.gunReload.isPressed() && (entityIn instanceof PlayerEntity)){
-//            ItemStack itemStackMain = ((PlayerEntity) entityIn).getHeldItemMainhand();
-//            if (itemStackMain.getItem() instanceof RocketLauncherWithAmmo){
-//                ItemStack itemStackOff = ((PlayerEntity) entityIn).getHeldItemOffhand();
-//                addAmmo(itemStackOff, itemStackMain, itemSlot, entityIn);
-//            }
-//        }
     }
 
     protected void enterCD(Player playerEntity){
         playerEntity.getCooldowns().addCooldown(this, coolDown);
+    }
+    
+    // 辅助方法：获取物品的注册名（如果需要的话）
+    protected ResourceLocation getItemRegistryName(Item item) {
+        return BuiltInRegistries.ITEM.getKey(item);
     }
 }

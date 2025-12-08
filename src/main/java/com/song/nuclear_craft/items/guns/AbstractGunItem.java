@@ -3,6 +3,7 @@ package com.song.nuclear_craft.items.guns;
 import com.song.nuclear_craft.NuclearCraft;
 import com.song.nuclear_craft.entities.AbstractAmmoEntity;
 import com.song.nuclear_craft.entities.AmmoEntities.IAmmoEntityFactory;
+import com.song.nuclear_craft.client.ClientSetup;
 import com.song.nuclear_craft.events.ClientEventForgeSubscriber;
 import com.song.nuclear_craft.items.AbstractAmmo;
 import com.song.nuclear_craft.items.Ammo.AmmoPossibleCombination;
@@ -18,8 +19,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -72,7 +71,7 @@ public abstract class AbstractGunItem extends Item {
 
                 BlockPos playerPos = playerIn.blockPosition();
                 NuclearCraftPacketHandler.C4_SETTING_CHANNEL.send(PacketDistributor.NEAR.with(PacketDistributor.TargetPoint.p(
-                        playerPos.getX(), playerPos.getY(), playerPos.getZ(), getGunSoundDist(), playerIn.level.dimension())),
+                        playerPos.getX(), playerPos.getY(), playerPos.getZ(), getGunSoundDist(), playerIn.level().dimension())),
                         new SoundPacket(playerPos, getShootActionString()));
 
                 shrinkAmmoNBT(heldItemStack);
@@ -80,7 +79,7 @@ public abstract class AbstractGunItem extends Item {
             }
             else if(! worldIn.isClientSide){
                 BlockPos pos = playerIn.blockPosition();
-                NuclearCraftPacketHandler.C4_SETTING_CHANNEL.send(PacketDistributor.NEAR.with(PacketDistributor.TargetPoint.p(pos.getX(), pos.getY(), pos.getZ(), 4, playerIn.level.dimension())),
+                NuclearCraftPacketHandler.C4_SETTING_CHANNEL.send(PacketDistributor.NEAR.with(PacketDistributor.TargetPoint.p(pos.getX(), pos.getY(), pos.getZ(), 4, playerIn.level().dimension())),
                         new SoundPacket(pos, "no_ammo"));
             }
         }
@@ -219,9 +218,9 @@ public abstract class AbstractGunItem extends Item {
                     ammo.shrink(n_load);
                     addAmmoNBT(mainHand, n_load, ammoItem.getType().name());
                     entity.getCooldowns().addCooldown(mainHand.getItem(), getLoadTime());
-                    if(!entity.level.isClientSide){
+                    if(!entity.level().isClientSide){
                         BlockPos pos = entity.blockPosition();
-                        NuclearCraftPacketHandler.C4_SETTING_CHANNEL.send(PacketDistributor.NEAR.with(PacketDistributor.TargetPoint.p(pos.getX(), pos.getY(), pos.getZ(), 10, entity.level.dimension())),
+                        NuclearCraftPacketHandler.C4_SETTING_CHANNEL.send(PacketDistributor.NEAR.with(PacketDistributor.TargetPoint.p(pos.getX(), pos.getY(), pos.getZ(), 10, entity.level().dimension())),
                                 new SoundPacket(pos, getReloadSound()));
                     }
                 }
@@ -263,11 +262,11 @@ public abstract class AbstractGunItem extends Item {
         // Client side
         super.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
         if(isSelected&&worldIn.isClientSide){
-            if(ClientEventForgeSubscriber.gunReload.consumeClick() && (entityIn instanceof Player)){
+            if(ClientSetup.gunReload.consumeClick() && (entityIn instanceof Player)){
                 NuclearCraftPacketHandler.KEY_BIND.sendToServer(new GunLoadingPacket(itemSlot));
                 }
-            Minecraft.getInstance().gui.setOverlayMessage(new TranslatableComponent(String.format("item.%s.guns.ammo_left", NuclearCraft.MODID)).withStyle(ChatFormatting.GRAY).
-                    append(new TextComponent(" "+getAmmoCount(stack)).withStyle(ChatFormatting.GOLD)), false);
+            Minecraft.getInstance().gui.setOverlayMessage(Component.translatable(String.format("item.%s.guns.ammo_left", NuclearCraft.MODID)).withStyle(ChatFormatting.GRAY).
+                    append(Component.translatable(" "+getAmmoCount(stack)).withStyle(ChatFormatting.GOLD)), false);
         }
 
     }
@@ -288,22 +287,22 @@ public abstract class AbstractGunItem extends Item {
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         if(hasAmmo(stack)){
             int n_ammo = getAmmoCount(stack);
-            tooltip.add(new TranslatableComponent(String.format("item.%s.guns.ammo_left", NuclearCraft.MODID)).withStyle(ChatFormatting.GRAY).
-                    append(new TextComponent(" "+n_ammo).withStyle(ChatFormatting.GOLD)));
-            tooltip.add(new TranslatableComponent(String.format("item.%s.guns.ammo_type", NuclearCraft.MODID)).withStyle(ChatFormatting.GRAY).
-                    append(new TextComponent(Objects.requireNonNull(getAmmoType(stack)).getDescription()).withStyle(ChatFormatting.GOLD)));
+            tooltip.add(Component.translatable(String.format("item.%s.guns.ammo_left", NuclearCraft.MODID)).withStyle(ChatFormatting.GRAY).
+                    append(Component.translatable(" "+n_ammo).withStyle(ChatFormatting.GOLD)));
+            tooltip.add(Component.translatable(String.format("item.%s.guns.ammo_type", NuclearCraft.MODID)).withStyle(ChatFormatting.GRAY).
+                    append(Component.translatable(Objects.requireNonNull(getAmmoType(stack)).getDescription()).withStyle(ChatFormatting.GOLD)));
         }
 
-        tooltip.add(new TranslatableComponent(String.format("item.%s.guns.compatible_ammo_size", NuclearCraft.MODID)).withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent(" "+compatibleSize())));
-        tooltip.add(new TranslatableComponent(String.format("item.%s.guns.damage_modifier", NuclearCraft.MODID)).withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent(String.format(" %.0f", 100*getDamageModifier())+"%")));
-        tooltip.add(new TranslatableComponent(String.format("item.%s.guns.speed_modifier", NuclearCraft.MODID)).withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent(String.format(" %.0f", 100*getSpeedModifier())+"%")));
+        tooltip.add(Component.translatable(String.format("item.%s.guns.compatible_ammo_size", NuclearCraft.MODID)).withStyle(ChatFormatting.GRAY)
+                .append(Component.translatable(" "+compatibleSize())));
+        tooltip.add(Component.translatable(String.format("item.%s.guns.damage_modifier", NuclearCraft.MODID)).withStyle(ChatFormatting.GRAY)
+                .append(Component.translatable(String.format(" %.0f", 100*getDamageModifier())+"%")));
+        tooltip.add(Component.translatable(String.format("item.%s.guns.speed_modifier", NuclearCraft.MODID)).withStyle(ChatFormatting.GRAY)
+                .append(Component.translatable(String.format(" %.0f", 100*getSpeedModifier())+"%")));
 
         if(canUseScope()){
             // add scope tutorial
-            tooltip.add(new TranslatableComponent(String.format("item.%s.guns.use_scope", NuclearCraft.MODID)).withStyle(ChatFormatting.GRAY).append(new TextComponent(" Z")));
+            tooltip.add(Component.translatable(String.format("item.%s.guns.use_scope", NuclearCraft.MODID)).withStyle(ChatFormatting.GRAY).append(Component.translatable(" Z")));
         }
     }
 

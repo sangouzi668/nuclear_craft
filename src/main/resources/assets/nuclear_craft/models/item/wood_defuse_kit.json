@@ -1,12 +1,12 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "nuclear_craft:materials/wood1",
-		"1": "nuclear_craft:materials/iron4",
-		"2": "nuclear_craft:materials/plastic2_white",
-		"3": "nuclear_craft:materials/plastic2_green",
-		"4": "nuclear_craft:materials/plastic1_red",
-		"particle": "nuclear_craft:materials/wood1"
+		"0": "nuclear_craft:item/wood1",
+		"1": "nuclear_craft:item/iron4_material",
+		"2": "nuclear_craft:item/plastic2_white_material",
+		"3": "nuclear_craft:item/plastic2_green_material",
+		"4": "nuclear_craft:item/plastic1_red_material",
+		"particle": "nuclear_craft:item/wood1"
 	},
 	"elements": [
 		{

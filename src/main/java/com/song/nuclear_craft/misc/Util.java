@@ -7,7 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class Util {
     public static ResourceLocation getResource(String s){
-        return new ResourceLocation(NuclearCraft.MODID, s);
+        return ResourceLocation.fromNamespaceAndPath(NuclearCraft.MODID, s);
     }
 
     public static String getResourceString(String s){

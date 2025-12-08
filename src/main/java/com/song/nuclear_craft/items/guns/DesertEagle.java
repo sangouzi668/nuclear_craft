@@ -12,7 +12,7 @@ import net.minecraft.world.item.Item.Properties;
 public class DesertEagle extends AbstractGunItem {
 
     public DesertEagle() {
-        super(new Properties().stacksTo(1).tab(NuclearCraft.ITEM_GROUP));
+        super(new Properties().stacksTo(1));
     }
 
     @Override

@@ -10,7 +10,7 @@ import net.minecraft.world.item.Item.Properties;
 
 public class Ak47 extends AbstractGunItem{
     public Ak47() {
-        super(new Properties().stacksTo(1).tab(NuclearCraft.ITEM_GROUP));
+        super(new Properties().stacksTo(1));
     }
 
     @Override

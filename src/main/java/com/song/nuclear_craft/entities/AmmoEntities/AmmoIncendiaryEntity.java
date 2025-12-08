@@ -37,8 +37,8 @@ public class AmmoIncendiaryEntity extends AbstractAmmoEntity {
     @Override
     protected void onHitBlock(@Nonnull BlockHitResult blockRayTraceResult) {
         super.onHitBlock(blockRayTraceResult);
-        if(!level.isClientSide){
-            IncendiaryRocketEntity.fireExplode(level, this.getX(), this.getY(), this.getZ(), 5);
+        if(!level().isClientSide){
+            IncendiaryRocketEntity.fireExplode(level(), this.getX(), this.getY(), this.getZ(), 5);
         }
         this.setRemoved(RemovalReason.KILLED);
     }

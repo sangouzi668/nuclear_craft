@@ -9,13 +9,12 @@ import com.song.nuclear_craft.misc.ConfigCommon;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.minecraft.core.Direction;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -35,23 +34,23 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages;
 
 import javax.annotation.Nonnull;
+import java.util.function.Predicate;
 
 public class AbstractAmmoEntity extends ThrowableItemProjectile {
     private double energy;
     private double initSpeed;
-//    private Vector3d initVec;
     private double gravity = 0.03f;
     protected double baseDamage = 30;
     private int age = 0;
     private double bulletSize;
-    private final IntOpenHashSet piercedEntities=new IntOpenHashSet(100);;
-    private boolean isMyImpact=false;
+    private final IntOpenHashSet piercedEntities = new IntOpenHashSet(100);
+    private boolean isMyImpact = false;
     private double initEnergy;
-    // BlockPos to store init motion
-    private static final EntityDataAccessor<Float> CURRENT_MOTION_X = SynchedEntityData.defineId(ThrowableItemProjectile.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Float> CURRENT_MOTION_Y = SynchedEntityData.defineId(ThrowableItemProjectile.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Float> CURRENT_MOTION_Z = SynchedEntityData.defineId(ThrowableItemProjectile.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Float> BULLET_SIZE = SynchedEntityData.defineId(ThrowableItemProjectile.class, EntityDataSerializers.FLOAT);
+    
+    private static final EntityDataAccessor<Float> CURRENT_MOTION_X = SynchedEntityData.defineId(AbstractAmmoEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> CURRENT_MOTION_Y = SynchedEntityData.defineId(AbstractAmmoEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> CURRENT_MOTION_Z = SynchedEntityData.defineId(AbstractAmmoEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> BULLET_SIZE = SynchedEntityData.defineId(AbstractAmmoEntity.class, EntityDataSerializers.FLOAT);
 
     @Override
     protected void defineSynchedData() {
@@ -62,28 +61,27 @@ public class AbstractAmmoEntity extends ThrowableItemProjectile {
         this.entityData.define(BULLET_SIZE, 0.f);
     }
 
-    public AbstractAmmoEntity(EntityType<? extends AbstractAmmoEntity> type, Level world){
+    public AbstractAmmoEntity(EntityType<? extends AbstractAmmoEntity> type, Level world) {
         super(type, world);
     }
 
-//    @OnlyIn(Dist.CLIENT)
-    public AbstractAmmoEntity(PlayMessages.SpawnEntity entity, Level world){
+    public AbstractAmmoEntity(PlayMessages.SpawnEntity entity, Level world) {
         this(EntityRegister.BULLET_ENTITY.get(), world);
         this.setDeltaMovement(entity.getVelX(), entity.getVelY(), entity.getVelZ());
-        this.lerpHeadTo(entity.getYaw(), entity.getPitch());
+        this.setRot(entity.getYaw(), entity.getPitch());
         this.setPos(entity.getPosX(), entity.getPosY(), entity.getPosZ());
     }
 
-    public AbstractAmmoEntity(double x, double y, double z, Level world, ItemStack itemStack, Player shooter){
+    public AbstractAmmoEntity(double x, double y, double z, Level world, ItemStack itemStack, Player shooter) {
         super(EntityRegister.BULLET_ENTITY.get(), x, y, z, world);
         this.setItem(itemStack);
         this.setOwner(shooter);
-        this.bulletSize = ((AbstractAmmo)itemStack.getItem()).getSize().getSize();
+        this.bulletSize = ((AbstractAmmo) itemStack.getItem()).getSize().getSize();
         this.entityData.set(BULLET_SIZE, (float) bulletSize);
-        this.setBaseDamage(((AbstractAmmo)itemStack.getItem()).getBaseDamage());
+        this.setBaseDamage(((AbstractAmmo) itemStack.getItem()).getBaseDamage());
     }
 
-    public void setGravity(double gravity){
+    public void setGravity(double gravity) {
         this.gravity = gravity;
     }
 
@@ -91,45 +89,46 @@ public class AbstractAmmoEntity extends ThrowableItemProjectile {
         this.baseDamage = baseDamage;
     }
 
-    public double getBaseDamage(){
+    public double getBaseDamage() {
         return baseDamage;
     }
 
     @Override
     public void tick() {
-
         double kEBefore = -1;
-        if (age == 0){
-            // init: speed small-> big for better performance
+        if (age == 0) {
             initSpeed = this.getDeltaMovement().length();
             this.bulletSize = this.entityData.get(BULLET_SIZE);
-//            initVec = this.getMotion();
             this.energy = getEnergy(initSpeed);
             initEnergy = this.energy;
-//                this.setMotion(initVec.mul(0.01, 0.01, 0.01));
         }
 
-        // Syn motion, default forge won't work for high speed objects
-        if (level.isClientSide){
+        if (level().isClientSide) {
             this.setDeltaMovement(this.entityData.get(CURRENT_MOTION_X), this.entityData.get(CURRENT_MOTION_Y), this.entityData.get(CURRENT_MOTION_Z));
-        }
-        else{
+        } else {
             Vec3 vector3d = this.getDeltaMovement();
-            this.entityData.set(CURRENT_MOTION_X, (float)vector3d.x);
-            this.entityData.set(CURRENT_MOTION_Y, (float)vector3d.y);
-            this.entityData.set(CURRENT_MOTION_Z, (float)vector3d.z);
+            this.entityData.set(CURRENT_MOTION_X, (float) vector3d.x);
+            this.entityData.set(CURRENT_MOTION_Y, (float) vector3d.y);
+            this.entityData.set(CURRENT_MOTION_Z, (float) vector3d.z);
         }
 
-        isMyImpact=true;
-        if (!level.isClientSide){
-            HitResult raytraceresult = ProjectileUtil.getHitResult(this, this::canHitEntity);
-            while (!this.isRemoved()&&raytraceresult!=null){
-                raytraceresult = ProjectileUtil.getHitResult(this, this::canHitEntity);
+        isMyImpact = true;
+        if (!level().isClientSide) {
+            // 修复1: 使用正确的 getHitResult 方法 - 简化版本
+            Vec3 startVec = this.position();
+            Vec3 endVec = startVec.add(this.getDeltaMovement());
+            Predicate<Entity> filter = entity -> !entity.isSpectator() && entity.isAlive() && entity.isPickable() && canHitEntity(entity);
+            
+            // 使用更简单的方法
+            HitResult raytraceresult = ProjectileUtil.getHitResultOnMoveVector(this, filter);
+            
+            while (!this.isRemoved() && raytraceresult != null) {
+                raytraceresult = ProjectileUtil.getHitResultOnMoveVector(this, filter);
 
                 if (raytraceresult != null && raytraceresult.getType() == HitResult.Type.ENTITY) {
-                    Entity entity = ((EntityHitResult)raytraceresult).getEntity();
+                    Entity entity = ((EntityHitResult) raytraceresult).getEntity();
                     Entity indirect = this.getOwner();
-                    if (entity instanceof Player && indirect instanceof Player && !((Player)indirect).canHarmPlayer((Player)entity)) {
+                    if (entity instanceof Player && indirect instanceof Player && !((Player) indirect).canHarmPlayer((Player) entity)) {
                         raytraceresult = null;
                     }
                 }
@@ -137,32 +136,24 @@ public class AbstractAmmoEntity extends ThrowableItemProjectile {
                 if (raytraceresult != null && raytraceresult.getType() != HitResult.Type.MISS && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, raytraceresult)) {
                     this.onHit(raytraceresult);
                 }
-                if(raytraceresult != null && raytraceresult.getType() == HitResult.Type.MISS){
+                if (raytraceresult != null && raytraceresult.getType() == HitResult.Type.MISS) {
                     break;
                 }
             }
         }
-        isMyImpact=false;
+        isMyImpact = false;
 
         super.tick();
 
-        if(this.energy <= 0){
-            this.setRemoved(RemovalReason.KILLED);
+        if (this.energy <= 0) {
+            this.discard();
         }
         this.setDeltaMovement(this.getDeltaMovement().add(0, -gravity, 0));
 
         this.age++;
-        // The following code somehow returns NaN
-        // I straight up removed the code since we don't need it anyway
-        // bullet flies so quickly that we don't need every detail
-//        Vec3 vector3d = this.getDeltaMovement();
-//        float f = (float) vector3d.horizontalDistanceSqr();
-//        this.setYRot((float)(Mth.atan2(vector3d.x, vector3d.z) * (double)(180F / (float)Math.PI)));
-//        this.setXRot((float)(Mth.atan2(vector3d.y, (double)f) * (double)(180F / (float)Math.PI)));
-
-        // remove aged bullets which are not removed by other means
-        if(this.age >= 1000){
-            this.setRemoved(RemovalReason.KILLED);
+        
+        if (this.age >= 1000) {
+            this.discard();
         }
     }
 
@@ -171,26 +162,28 @@ public class AbstractAmmoEntity extends ThrowableItemProjectile {
         Entity entity = entityRayTraceResult.getEntity();
         this.piercedEntities.add(entity.getId());
 
-        if(entity instanceof ItemEntity || entity instanceof AbstractAmmoEntity){
-            // bullets do not destroy item
-            // bullets do not destroy themselves (for short guns)
+        if (entity instanceof ItemEntity || entity instanceof AbstractAmmoEntity) {
             return;
         }
 
-        if(entity instanceof LivingEntity){
-            // for proper shotgun and machine gun behaviour
-            entity.invulnerableTime=0;
+        if (entity instanceof LivingEntity) {
+            entity.invulnerableTime = 0;
         }
 
         double damage = this.baseDamage * getEnergy(this.getDeltaMovement().length()) / this.initEnergy;
-        // get shooter
-        DamageSource damageSource = new IndirectEntityDamageSource(new ResourceLocation(NuclearCraft.MODID, "bullet").toString(), this, this.getOwner()).setProjectile();
+        // 修复2: 使用正确的 DamageSource 创建方式
+        Entity owner = this.getOwner();
+        DamageSource damageSource;
+        if (owner instanceof LivingEntity) {
+            damageSource = this.damageSources().mobProjectile(this, (LivingEntity) owner);
+        } else {
+            damageSource = this.damageSources().indirectMagic(this, owner);
+        }
         boolean result = entity.hurt(damageSource, (float) damage);
 
-        if (result){
+        if (result) {
             this.energy -= 30;
-        }
-        else {
+        } else {
             this.energy -= 10;
         }
     }
@@ -198,61 +191,56 @@ public class AbstractAmmoEntity extends ThrowableItemProjectile {
     @Override
     protected void onHit(HitResult result) {
         double kEBefore = this.energy;
-        // do this hack to remove impact in super.tick()
-        if(isMyImpact&&!level.isClientSide){
+        if (isMyImpact && !level().isClientSide) {
             super.onHit(result);
         }
-        if(this.energy<=0){
-            this.setRemoved(RemovalReason.KILLED);
+        if (this.energy <= 0) {
+            this.discard();
         }
         double factor = Math.sqrt(this.energy / kEBefore);
         this.setDeltaMovement(this.getDeltaMovement().multiply(factor, factor, factor));
     }
 
     @Override
-    protected boolean canHitEntity(Entity p_230298_1_) {
-        return super.canHitEntity(p_230298_1_)&&((this.piercedEntities == null || !this.piercedEntities.contains(p_230298_1_.getId())));
+    protected boolean canHitEntity(Entity entity) {
+        return super.canHitEntity(entity) && (this.piercedEntities == null || !this.piercedEntities.contains(entity.getId()));
     }
 
     @Override
     protected void onHitBlock(@Nonnull BlockHitResult blockRayTraceResult) {
-        Block block = level.getBlockState(blockRayTraceResult.getBlockPos()).getBlock();
-        double blastResist = block.getExplosionResistance();
-        if(blastResist>getBlockBreakThreshold()+1e-3){
-            // ricochet
+        Block block = level().getBlockState(blockRayTraceResult.getBlockPos()).getBlock();
+        double blastResist = block.defaultBlockState().getDestroySpeed(level(), blockRayTraceResult.getBlockPos());
+        if (blastResist > getBlockBreakThreshold() + 1e-3) {
             Direction blockDirection = blockRayTraceResult.getDirection();
             this.ricochetSpeed(blockDirection);
             teleportToHitPoint(blockRayTraceResult);
             this.energy -= this.initEnergy * getRicochetEnergyLoss();
-        }
-        else {
-            // destroy
-            level.destroyBlock(blockRayTraceResult.getBlockPos(), true);
+        } else {
+            level().destroyBlock(blockRayTraceResult.getBlockPos(), true);
             this.energy -= getEnergyLoss(blastResist);
         }
         this.piercedEntities.clear();
     }
 
-    protected void teleportToHitPoint(HitResult rayTraceResult){
-        // necessary for proper ricochet behaviour
+    protected void teleportToHitPoint(HitResult rayTraceResult) {
         Vec3 hitResult = rayTraceResult.getLocation();
         this.setPos(hitResult.x, hitResult.y, hitResult.z);
     }
 
-    public double getRicochetEnergyLoss(){
+    public double getRicochetEnergyLoss() {
         return 0.5d;
     }
 
-    public double getBlockBreakThreshold(){
+    public double getBlockBreakThreshold() {
         return ConfigCommon.AMMO_BLOCK_BREAK_THRESHOLD.get();
     }
 
-    public double getEnergyLoss(double blastResist){
-        return 25 + 10 * (blastResist-2);
+    public double getEnergyLoss(double blastResist) {
+        return 25 + 10 * (blastResist - 2);
     }
 
-    private void ricochetSpeed(Direction direction){
-        switch (direction){
+    private void ricochetSpeed(Direction direction) {
+        switch (direction) {
             case UP:
             case DOWN:
                 this.setDeltaMovement(this.getDeltaMovement().multiply(1, -1, 1));
@@ -265,12 +253,13 @@ public class AbstractAmmoEntity extends ThrowableItemProjectile {
             case SOUTH:
                 this.setDeltaMovement(this.getDeltaMovement().multiply(1, 1, -1));
                 break;
-            default:break;
+            default:
+                break;
         }
     }
 
     protected double getEnergy(double speed) {
-        return 0.5*speed*speed*(this.bulletSize/9);
+        return 0.5 * speed * speed * (this.bulletSize / 9);
     }
 
     @Override
@@ -279,8 +268,7 @@ public class AbstractAmmoEntity extends ThrowableItemProjectile {
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
-
 }

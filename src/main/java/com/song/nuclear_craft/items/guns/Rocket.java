@@ -5,8 +5,9 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.Level;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -28,10 +29,12 @@ public class Rocket extends Item {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         for(int l=0; l<this.tooltipLines; l++){
-            tooltip.add(new TranslatableComponent(String.format("tooltip.%s.%s.line%d", NuclearCraft.MODID,
-                    Objects.requireNonNull(this.getRegistryName()).getPath(), l)));
+            // 修复：使用新的注册表系统获取物品注册名
+            ResourceLocation registryName = ForgeRegistries.ITEMS.getKey(this);
+            tooltip.add(Component.translatable(String.format("tooltip.%s.%s.line%d", NuclearCraft.MODID,
+                    registryName != null ? registryName.getPath() : "unknown", l)));
         }
-        tooltip.add(new TranslatableComponent(String.format("tooltip.%s.rocket_load.line0", NuclearCraft.MODID)));
-        tooltip.add(new TranslatableComponent(String.format("tooltip.%s.rocket_load.line1", NuclearCraft.MODID)));
+        tooltip.add(Component.translatable(String.format("tooltip.%s.rocket_load.line0", NuclearCraft.MODID)));
+        tooltip.add(Component.translatable(String.format("tooltip.%s.rocket_load.line1", NuclearCraft.MODID)));
     }
 }

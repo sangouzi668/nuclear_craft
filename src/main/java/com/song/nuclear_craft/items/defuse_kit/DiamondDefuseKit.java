@@ -7,7 +7,7 @@ import net.minecraft.world.item.Item.Properties;
 
 public class DiamondDefuseKit extends DefuseKit{
     public DiamondDefuseKit() {
-        super(new Properties().stacksTo(1).tab(NuclearCraft.ITEM_GROUP).durability(150));
+        super(new Properties().stacksTo(1).durability(150));
     }
 
     @Override

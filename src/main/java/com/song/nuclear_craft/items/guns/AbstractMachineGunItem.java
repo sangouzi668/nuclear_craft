@@ -50,13 +50,13 @@ public abstract class AbstractMachineGunItem extends AbstractGunItem{
                     shrinkAmmoNBT(heldItemStack);
                 }
                 NuclearCraftPacketHandler.C4_SETTING_CHANNEL.send(PacketDistributor.NEAR.with(PacketDistributor.TargetPoint.p(
-                        playerPos.getX(), playerPos.getY(), playerPos.getZ(), getGunSoundDist(), playerIn.level.dimension())),
+                        playerPos.getX(), playerPos.getY(), playerPos.getZ(), getGunSoundDist(), playerIn.level().dimension())),
                         new SoundPacket(playerPos, getShootActionString()));
                 return InteractionResultHolder.sidedSuccess(heldItemStack, worldIn.isClientSide());
             }
             else if(! worldIn.isClientSide){
                 BlockPos pos = playerIn.blockPosition();
-                NuclearCraftPacketHandler.C4_SETTING_CHANNEL.send(PacketDistributor.NEAR.with(PacketDistributor.TargetPoint.p(pos.getX(), pos.getY(), pos.getZ(), 4, playerIn.level.dimension())),
+                NuclearCraftPacketHandler.C4_SETTING_CHANNEL.send(PacketDistributor.NEAR.with(PacketDistributor.TargetPoint.p(pos.getX(), pos.getY(), pos.getZ(), 4, playerIn.level().dimension())),
                         new SoundPacket(pos, "no_ammo"));
             }
         }

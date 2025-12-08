@@ -10,7 +10,7 @@ import net.minecraft.world.item.Item.Properties;
 
 public class Glock extends AbstractGunItem{
     public Glock() {
-        super(new Properties().stacksTo(1).tab(NuclearCraft.ITEM_GROUP));
+        super(new Properties().stacksTo(1));
     }
 
     @Override

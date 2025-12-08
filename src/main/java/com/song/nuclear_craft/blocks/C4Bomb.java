@@ -7,6 +7,7 @@ import com.song.nuclear_craft.network.NuclearCraftPacketHandler;
 import com.song.nuclear_craft.network.SoundPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -28,6 +29,7 @@ import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
 
@@ -116,29 +118,38 @@ public abstract class C4Bomb extends FaceAttachedHorizontalDirectionalBlock impl
 
     @Override
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-        ItemStack itemStack = player.getItemInHand(InteractionHand.MAIN_HAND);
-        if(itemStack.getItem() instanceof DefuseKit){
-            if(! worldIn.isClientSide()){
-                C4BombTileEntity c4BombTileEntity = (C4BombTileEntity)worldIn.getBlockEntity(pos);
-                if(c4BombTileEntity != null && c4BombTileEntity.currentDefuseStatus<0){
+        ItemStack itemStack = player.getItemInHand(handIn);
+        if (itemStack.getItem() instanceof DefuseKit) {
+            if (!worldIn.isClientSide()) {
+                C4BombTileEntity c4BombTileEntity = (C4BombTileEntity) worldIn.getBlockEntity(pos);
+                if (c4BombTileEntity != null && c4BombTileEntity.currentDefuseStatus < 0) {
                     c4BombTileEntity.currentDefuseStatus = 0;
-                    c4BombTileEntity.defuseTime = ((DefuseKit)(itemStack.getItem())).getDefuseTick();
+                    c4BombTileEntity.defuseTime = ((DefuseKit) (itemStack.getItem())).getDefuseTick();
                     c4BombTileEntity.defusingEntityID = player.getId();
-                    c4BombTileEntity.defusingTool = Objects.requireNonNull(itemStack.getItem().getRegistryName()).toString();
-                    NuclearCraftPacketHandler.C4_SETTING_CHANNEL.send(PacketDistributor.NEAR.with(PacketDistributor.TargetPoint.p(pos.getX(), pos.getY(), pos.getZ(), 21, worldIn.dimension())),
-                            new SoundPacket(pos, "defusing"));
+                
+                // 修复：使用 BuiltInRegistries 获取物品注册名
+                    ResourceLocation defuseKitRegistryName = BuiltInRegistries.ITEM.getKey(itemStack.getItem());
+                    c4BombTileEntity.defusingTool = defuseKitRegistryName.toString();
+                
+                    NuclearCraftPacketHandler.C4_SETTING_CHANNEL.send(
+                        PacketDistributor.NEAR.with(() -> new PacketDistributor.TargetPoint(
+                            pos.getX(), pos.getY(), pos.getZ(), 21, worldIn.dimension())),
+                        new SoundPacket(pos, "defusing"));
                 }
             }
-            return InteractionResult.PASS;
-        }
-        else {
+            return worldIn.isClientSide ? InteractionResult.SUCCESS : InteractionResult.CONSUME;
+        } else {
             if (worldIn.isClientSide) {
                 return InteractionResult.SUCCESS;
             } else {
                 BlockEntity tileentity = worldIn.getBlockEntity(pos);
                 if (tileentity instanceof C4BombTileEntity) {
                     ((C4BombTileEntity) tileentity).synToClient();
-                    NetworkHooks.openGui((ServerPlayer) player, (C4BombTileEntity)tileentity, pos);
+                
+                    // 修复：使用新的 openScreen 方法
+                    NetworkHooks.openScreen((ServerPlayer) player, (C4BombTileEntity) tileentity, buf -> {
+                        buf.writeBlockPos(pos);
+                    });
                 }
                 return InteractionResult.CONSUME;
             }
@@ -151,6 +162,7 @@ public abstract class C4Bomb extends FaceAttachedHorizontalDirectionalBlock impl
     }
 
     @Nullable
+    @SuppressWarnings("unchecked")
     protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(BlockEntityType<A> p_152133_, BlockEntityType<E> p_152134_, BlockEntityTicker<? super E> p_152135_) {
         return p_152134_ == p_152133_ ? (BlockEntityTicker<A>)p_152135_ : null;
     }

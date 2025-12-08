@@ -7,7 +7,7 @@ import net.minecraft.world.item.Item.Properties;
 
 public class NetheriteDefuseKit extends DefuseKit{
     public NetheriteDefuseKit() {
-        super(new Properties().stacksTo(1).tab(NuclearCraft.ITEM_GROUP).durability(500));
+        super(new Properties().stacksTo(1).durability(500));
     }
 
     @Override

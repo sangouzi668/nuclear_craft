@@ -29,7 +29,7 @@ public class ShockWaveEntity extends ArmorStand {
             this.setRemoved(RemovalReason.KILLED);
         }
 
-        if (! this.level.isClientSide() && (life % 10 ==0)){
+        if (! this.level().isClientSide() && (life % 10 ==0)){
             int maxStep = radius*6;
             int maxDy = 3;
             for(int step=0; step<maxStep; step++){
@@ -37,7 +37,7 @@ public class ShockWaveEntity extends ArmorStand {
                 double x = this.getX() + Math.cos(theta) * radius;
                 double z = this.getZ() + Math.sin(theta) * radius;
                 for (int dy=-maxDy; dy<=maxDy; dy++){
-                    this.level.destroyBlock(new BlockPos(x, dy+this.getY(), z), true);
+                    this.level().destroyBlock(BlockPos.containing(x, dy + this.getY(), z), true);
                 }
             }
             radius++;

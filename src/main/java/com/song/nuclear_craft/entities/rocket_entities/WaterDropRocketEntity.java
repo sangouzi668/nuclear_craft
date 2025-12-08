@@ -35,14 +35,14 @@ public class WaterDropRocketEntity extends FireworkRocketEntity {
     @Override
     protected void onHitEntity(EntityHitResult rayTraceResult) {
         Vec3 hitPoint = rayTraceResult.getLocation();
-        meltDown(level, hitPoint.x, hitPoint.y, hitPoint.z);
+        meltDown(level(), hitPoint.x, hitPoint.y, hitPoint.z);
         meltCD=2;
     }
 
     @Override
     protected void onHitBlock(BlockHitResult rayTraceResult) {
         Vec3 hitPoint = rayTraceResult.getLocation();
-        meltDown(level, hitPoint.x, hitPoint.y, hitPoint.z);
+        meltDown(level(), hitPoint.x, hitPoint.y, hitPoint.z);
         meltCD=2;
     }
 
@@ -50,11 +50,11 @@ public class WaterDropRocketEntity extends FireworkRocketEntity {
     public void tick() {
         super.tick();
         if(--meltCD == 0){
-            meltDown(level, this.getX(), this.getY(), this.getZ());
+            meltDown(level(), this.getX(), this.getY(), this.getZ());
             meltCD = 2;
         }
 
-        if(!level.isClientSide){
+        if(!level().isClientSide){
             age ++;
             if(this.getY() > 300 && this.getDeltaMovement().y()>0){
                 this.setRemoved(RemovalReason.KILLED);
@@ -70,7 +70,7 @@ public class WaterDropRocketEntity extends FireworkRocketEntity {
             float radius = 10f;
             List<BlockPos> affectedBlockPositions = ExplosionUtils.getAffectedBlockPositions(world, x, y, z, radius, 3600002);
             for(BlockPos blockPos: affectedBlockPositions){
-                if(blockPos.closerThan(new Vec3i(x, y, z), radius/4)){
+                if(blockPos.closerThan(BlockPos.containing(x, y, z), radius/4)){
                     world.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
                     continue;
                 }

@@ -38,7 +38,7 @@ public class SoundPacket {
 
     public static void handle(SoundPacket packet, Supplier<NetworkEvent.Context> ctx){
         ctx.get().enqueueWork(()-> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, ()->()->{
-            SoundPlayMethods.playSoundFromString(new BlockPos(packet.x, packet.y, packet.z), packet.action);
+            SoundPlayMethods.playSoundFromString(new BlockPos((int)packet.x, (int)packet.y, (int)packet.z), packet.action);
         }));
         ctx.get().setPacketHandled(true);
     }

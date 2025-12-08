@@ -1,11 +1,11 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "nuclear_craft:materials/diamond",
-		"1": "nuclear_craft:materials/wood2",
-		"2": "nuclear_craft:materials/gold1",
-		"3": "nuclear_craft:materials/wood1",
-		"particle": "nuclear_craft:materials/diamond"
+		"0": "nuclear_craft:item/diamond_material",
+		"1": "nuclear_craft:item/wood2_material",
+		"2": "nuclear_craft:item/gold1_material",
+		"3": "nuclear_craft:item/wood1_material",
+		"particle": "nuclear_craft:item/diamond_material"
 	},
 	"elements": [
 		{

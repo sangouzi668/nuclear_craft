@@ -17,7 +17,7 @@ import net.minecraft.world.level.Level;
 @Deprecated
 public class AtomicBombRocket extends FireworkRocketItem {
     public AtomicBombRocket() {
-        super(new Item.Properties().stacksTo(1).tab(NuclearCraft.ITEM_GROUP));
+        super(new Item.Properties().stacksTo(1));
     }
 
     @Override

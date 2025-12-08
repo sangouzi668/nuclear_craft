@@ -56,8 +56,8 @@ public class HighExplosiveRocketEntity extends FireworkRocketEntity {
 
     private void explode(){
         this.setRemoved(RemovalReason.KILLED);
-        if (! this.level.isClientSide) {
-            ExplosionUtils.oldNukeExplode(level, this.boostedEntity, this.getX(), this.getY(), this.getZ(), HIGH_EXPLOSIVE_RADIUS, false, MAX_BLAST_POWER);
+        if (! this.level().isClientSide) {
+            ExplosionUtils.oldNukeExplode(level(), this.boostedEntity, this.getX(), this.getY(), this.getZ(), HIGH_EXPLOSIVE_RADIUS, false, MAX_BLAST_POWER);
         }
     }
 }

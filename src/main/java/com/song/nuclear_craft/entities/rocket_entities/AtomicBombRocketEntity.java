@@ -52,10 +52,10 @@ public class AtomicBombRocketEntity extends FireworkRocketEntity {
 
     private void explode(){
         this.setRemoved(RemovalReason.KILLED);
-        if (! this.level.isClientSide) {
+        if (! this.level().isClientSide) {
 //            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, ()->()->AtomicBombEntity.nukeExplode(world, this.boostedEntity, this.getPosX(), this.getPosY(), this.getPosZ(), AtomicBombEntity.NUKE_RADIUS, true));
 //            ExplosionUtils.oldNukeExplode(world, this.boostedEntity, this.getPosX(), this.getPosY(), this.getPosZ(), ExplosionUtils.NUKE_RADIUS, true);
-            this.level.addFreshEntity(new NukeExplosionHandler(this.getX(), this.getY(), this.getZ(), this.level));
+            this.level().addFreshEntity(new NukeExplosionHandler(this.getX(), this.getY(), this.getZ(), this.level()));
         }
     }
 }

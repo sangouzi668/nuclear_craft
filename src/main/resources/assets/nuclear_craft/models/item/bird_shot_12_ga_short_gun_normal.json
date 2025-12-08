@@ -1,8 +1,8 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"1": "nuclear_craft:materials/copper",
-		"particle": "nuclear_craft:materials/copper"
+		"0": "nuclear_craft:item/copper_material",
+		"particle": "nuclear_craft:item/copper_material"
 	},
 	"elements": [
 		{

@@ -43,8 +43,8 @@ public class C4BombSettingPacket {
             NetworkEvent.Context context = ctx.get();
             PacketListener handler = context.getNetworkManager().getPacketListener();
             if (handler instanceof ServerGamePacketListenerImpl){
-                ServerLevel world = (ServerLevel) ((ServerGamePacketListenerImpl) handler).player.level;
-                BlockEntity entity = world.getBlockEntity(new BlockPos(packet.x, packet.y, packet.z));
+                ServerLevel world = (ServerLevel) ((ServerGamePacketListenerImpl) handler).player.level();
+                BlockEntity entity = world.getBlockEntity(BlockPos.containing(packet.x, packet.y, packet.z));
                 if (!(entity instanceof C4BombTileEntity)){
                     throw new IllegalArgumentException("entity should be C4bomb, but not: "+entity);
                 }

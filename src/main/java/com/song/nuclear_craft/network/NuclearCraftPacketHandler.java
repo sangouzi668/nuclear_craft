@@ -9,25 +9,25 @@ public class NuclearCraftPacketHandler {
     private static final String PROTOCOL_VERSION = "1";
     private static int channel_id = 0;
     public static final SimpleChannel EXPLOSION_CHANNEL = NetworkRegistry.newSimpleChannel(
-            new ResourceLocation(NuclearCraft.MODID, "explosion"),
+            ResourceLocation.fromNamespaceAndPath(NuclearCraft.MODID, "explosion"),
             () -> PROTOCOL_VERSION,
             PROTOCOL_VERSION::equals,
             PROTOCOL_VERSION::equals
     );
     public static final SimpleChannel PARTICLE_CHANNEL = NetworkRegistry.newSimpleChannel(
-            new ResourceLocation(NuclearCraft.MODID, "smoke_bomb"),
+            ResourceLocation.fromNamespaceAndPath(NuclearCraft.MODID, "smoke_bomb"),
             () -> PROTOCOL_VERSION,
             PROTOCOL_VERSION::equals,
             PROTOCOL_VERSION::equals
     );
     public static final SimpleChannel C4_SETTING_CHANNEL = NetworkRegistry.newSimpleChannel(
-            new ResourceLocation(NuclearCraft.MODID, "c4_setting"),
+            ResourceLocation.fromNamespaceAndPath(NuclearCraft.MODID, "c4_setting"),
             () -> PROTOCOL_VERSION,
             PROTOCOL_VERSION::equals,
             PROTOCOL_VERSION::equals
     );
     public static final SimpleChannel KEY_BIND = NetworkRegistry.newSimpleChannel(
-            new ResourceLocation(NuclearCraft.MODID, "key_bind"),
+            ResourceLocation.fromNamespaceAndPath(NuclearCraft.MODID, "key_bind"),
             () -> PROTOCOL_VERSION,
             PROTOCOL_VERSION::equals,
             PROTOCOL_VERSION::equals
