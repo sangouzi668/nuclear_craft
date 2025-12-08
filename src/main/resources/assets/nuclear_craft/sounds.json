@@ -1,0 +1,122 @@
+{
+  "c4_beep": {
+    "category": "block",
+    "subtitle": "nuclear_craft.subtitle.c4_beep",
+    "sounds": ["nuclear_craft:c4_beep"]
+  },
+  "bomb_planted": {
+    "category": "player",
+    "subtitle": "nuclear_craft.subtitle.bomb_planted",
+    "sounds": ["nuclear_craft:bomb_planted"]
+  },
+  "loading": {
+    "category": "player",
+    "subtitle": "nuclear_craft.subtitle.loading",
+    "sounds": ["nuclear_craft:loading"]
+  },
+  "desert_eagle": {
+    "category": "player",
+    "subtitle": "nuclear_craft.subtitle.desert_eagle",
+    "sounds": ["nuclear_craft:desert_eagle"]
+  },
+  "no_ammo": {
+    "category": "player",
+    "subtitle": "nuclear_craft.subtitle.no_ammo",
+    "sounds": ["nuclear_craft:no_ammo"]
+  },
+  "de_reload_empty": {
+    "category": "player",
+    "subtitle": "nuclear_craft.subtitle.de_reload_empty",
+    "sounds": ["nuclear_craft:de_reload_empty"]
+  },
+  "usp": {
+    "category": "player",
+    "subtitle": "nuclear_craft.subtitle.usp",
+    "sounds": ["nuclear_craft:usp"]
+  },
+  "glock": {
+  "category": "player",
+  "subtitle": "nuclear_craft.subtitle.glock",
+  "sounds": ["nuclear_craft:glock"]
+  },
+  "fn57": {
+    "category": "player",
+    "subtitle": "nuclear_craft.subtitle.fn57",
+    "sounds": ["nuclear_craft:fn57"]
+  },
+  "ak47": {
+    "category": "player",
+    "subtitle": "nuclear_craft.subtitle.ak47",
+    "sounds": ["nuclear_craft:ak47"]
+  },
+  "awp": {
+    "category": "player",
+    "subtitle": "nuclear_craft.subtitle.awp",
+    "sounds": ["nuclear_craft:awp"]
+  },
+  "awp_reload": {
+    "category": "player",
+    "subtitle": "nuclear_craft.subtitle.awp_reload",
+    "sounds": ["nuclear_craft:awp_reload"]
+  },
+  "zoom": {
+    "category": "player",
+    "subtitle": "nuclear_craft.subtitle.zoom",
+    "sounds": ["nuclear_craft:zoom"]
+  },
+  "ak47_reload": {
+    "category": "player",
+    "subtitle": "nuclear_craft.subtitle.ak47_reload",
+    "sounds": ["nuclear_craft:ak47_reload"]
+  },
+  "barrett": {
+    "category": "player",
+    "subtitle": "nuclear_craft.subtitle.barrett",
+    "sounds": ["nuclear_craft:barrett"]
+  },
+  "m4a4": {
+    "category": "player",
+    "subtitle": "nuclear_craft.subtitle.m4a4",
+    "sounds": ["nuclear_craft:m4a4"]
+  },
+  "m4a4_reload": {
+    "category": "player",
+    "subtitle": "nuclear_craft.subtitle.m4a4_reload",
+    "sounds": ["nuclear_craft:m4a4_reload"]
+  },
+  "xm1014": {
+    "category": "player",
+    "subtitle": "nuclear_craft.subtitle.xm1014",
+    "sounds": ["nuclear_craft:xm1014"]
+  },
+  "xm1014_reload": {
+    "category": "player",
+    "subtitle": "nuclear_craft.subtitle.xm1014_reload",
+    "sounds": ["nuclear_craft:xm1014_reload"]
+  },
+  "nova": {
+    "category": "player",
+    "subtitle": "nuclear_craft.subtitle.nova",
+    "sounds": ["nuclear_craft:nova"]
+  },
+  "p90": {
+    "category": "player",
+    "subtitle": "nuclear_craft.subtitle.p90",
+    "sounds": ["nuclear_craft:p90"]
+  },
+  "p90_reload": {
+    "category": "player",
+    "subtitle": "nuclear_craft.subtitle.p90_reload",
+    "sounds": ["nuclear_craft:p90_reload"]
+  },
+  "defusing": {
+    "category": "player",
+    "subtitle": "nuclear_craft.subtitle.defusing",
+    "sounds": ["nuclear_craft:defusing"]
+  },
+  "defused": {
+    "category": "player",
+    "subtitle": "nuclear_craft.subtitle.defused",
+    "sounds": ["nuclear_craft:defused"]
+  }
+}
