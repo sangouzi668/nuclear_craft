@@ -120,7 +120,7 @@ public class AbstractAmmoEntity extends ThrowableItemProjectile {
             Vec3 endVec = startVec.add(this.getDeltaMovement());
             Predicate<Entity> filter = entity -> !entity.isSpectator() && entity.isAlive() && entity.isPickable() && canHitEntity(entity);
             
-            // 使用更简单的方法
+            // Use a simpler method
             HitResult raytraceresult = ProjectileUtil.getHitResultOnMoveVector(this, filter);
             
             while (!this.isRemoved() && raytraceresult != null) {

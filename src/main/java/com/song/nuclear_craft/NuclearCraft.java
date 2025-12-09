@@ -18,6 +18,7 @@ import com.song.nuclear_craft.misc.SoundEventList;
 import net.minecraftforge.event.server.ServerStartingEvent;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -34,7 +35,9 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -48,7 +51,10 @@ public class NuclearCraft
     private static final Logger LOGGER = LogManager.getLogger();
     public static final String MODID = "nuclear_craft";
     
-    public static final CreativeModeTab ITEM_GROUP = CreativeModeTab.builder()
+    // Register creative tabs
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
+    
+    public static final RegistryObject<CreativeModeTab> ITEM_GROUP = CREATIVE_MODE_TABS.register("weapons", () -> CreativeModeTab.builder()
         .title(Component.translatable("itemGroup.weapons"))
         .icon(() -> new ItemStack(ItemList.ATOMIC_BOMB_ROCKET.get()))
         .displayItems((pParameters, pOutput) -> {
@@ -99,9 +105,9 @@ public class NuclearCraft
             pOutput.accept(ItemList.STATUE_OF_ROCKET.get());
             pOutput.accept(ItemList.STATUE_OF_EXPLOSIVE.get());
         })
-        .build();
+        .build());
         
-    public static final CreativeModeTab AMMO_ITEM_GROUP = CreativeModeTab.builder()
+    public static final RegistryObject<CreativeModeTab> AMMO_ITEM_GROUP = CREATIVE_MODE_TABS.register("bullets", () -> CreativeModeTab.builder()
         .title(Component.translatable("itemGroup.bullets"))
         .icon(() -> new ItemStack(ItemList.AMMO_REGISTRIES_TYPE.get(AmmoSize.SIZE_127).get(AmmoType.NORMAL).get()))
         .displayItems((pParameters, pOutput) -> {
@@ -121,7 +127,7 @@ public class NuclearCraft
                 pOutput.accept(ItemList.BIRD_SHOT_MAP.get(ammoType).get());
             }
         })
-        .build();
+        .build());
 
     public NuclearCraft(FMLJavaModLoadingContext context) {
         // Register event listeners
@@ -138,10 +144,11 @@ public class NuclearCraft
         ItemList.ITEMS.register(context.getModEventBus());
         BlockList.BLOCKS.register(context.getModEventBus());
         SoundEventList.SOUND_EVENTS.register(context.getModEventBus());
+        CREATIVE_MODE_TABS.register(context.getModEventBus()); // Register creative tabs
         
         EffectRegister.EFFECTS.register(context.getModEventBus());
         TileEntityRegister.TILE_ENTITY_TYPES.register(context.getModEventBus());
-        ContainerTypeList.CONTAINERS.register(context.getModEventBus()); // 现在应该能正常工作了
+        ContainerTypeList.CONTAINERS.register(context.getModEventBus());
 
         ModLoadingContext modLoadingContext = ModLoadingContext.get();
         modLoadingContext.registerConfig(ModConfig.Type.CLIENT, ConfigClient.CLIENT);

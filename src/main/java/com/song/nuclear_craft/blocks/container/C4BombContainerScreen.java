@@ -18,8 +18,8 @@ public class C4BombContainerScreen extends AbstractContainerScreen<C4BombContain
     public C4BombContainerScreen(C4BombContainer screenContainer, Inventory inv, Component titleIn) {
         super(screenContainer, inv, titleIn);
         // Set GUI size, only show C4-specific part, excluding player inventory
-        this.imageWidth = 176; // 根据GUI纹理的实际宽度调整
-        this.imageHeight = 166; // 根据GUI纹理的实际高度调整
+        this.imageWidth = 176; // Adjust according to actual width of GUI texture
+        this.imageHeight = 166; // Adjust according to actual height of GUI texture
     }
 
     @Override

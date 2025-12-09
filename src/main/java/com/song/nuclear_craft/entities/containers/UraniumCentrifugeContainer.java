@@ -35,12 +35,12 @@ public class UraniumCentrifugeContainer extends AbstractContainerMenu {
             // This is a basic template, needs adjustment based on actual slot count
             
             if (index < 36) {
-                // 从玩家物品栏移动到容器
+                // Move from player inventory to container
                 if (!this.moveItemStackTo(itemstack1, 36, this.slots.size(), false)) {
                     return ItemStack.EMPTY;
                 }
             } else {
-                // 从容器移动到玩家物品栏
+                // Move from container to player inventory
                 if (!this.moveItemStackTo(itemstack1, 0, 36, false)) {
                     return ItemStack.EMPTY;
                 }

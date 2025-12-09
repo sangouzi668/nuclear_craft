@@ -127,7 +127,7 @@ public class NukeExplosionHandler extends Entity {
                 
                     if (Math.abs(y - this.getY()) < effectiveHeight) {
                         // Simple downward block destruction (no material distinction)
-                        for (int i = 0; i < 3; i++) { // 只破坏3层
+                        for (int i = 0; i < 3; i++) { // Only destroy 3 layers
                             BlockPos targetPos = BlockPos.containing(this.getX() + dx, y - 1 - i, this.getZ() + dz);
                             BlockState blockState = level().getBlockState(targetPos);
                             if (!blockState.isAir()) {

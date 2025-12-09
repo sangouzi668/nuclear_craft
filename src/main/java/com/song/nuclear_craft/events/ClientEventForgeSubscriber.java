@@ -58,7 +58,7 @@ public class ClientEventForgeSubscriber {
         matrixStack.pushPose();
         VertexConsumer builder = renderTypeBuffer.getBuffer(RenderType.translucent());
         // Fix color setting method - use correct color setting approach
-        builder.color(255, 0, 0, 255); // 改回 color 方法
+        builder.color(255, 0, 0, 255); // Change back to color method
         renderTypeBuffer.endBatch(RenderType.translucent());
         matrixStack.popPose();
     }
