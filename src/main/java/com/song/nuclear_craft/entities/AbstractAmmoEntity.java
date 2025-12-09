@@ -26,6 +26,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -208,8 +209,8 @@ public class AbstractAmmoEntity extends ThrowableItemProjectile {
 
     @Override
     protected void onHitBlock(@Nonnull BlockHitResult blockRayTraceResult) {
-        Block block = level().getBlockState(blockRayTraceResult.getBlockPos()).getBlock();
-        double blastResist = block.defaultBlockState().getDestroySpeed(level(), blockRayTraceResult.getBlockPos());
+        BlockState blockState = level().getBlockState(blockRayTraceResult.getBlockPos());
+        double blastResist = blockState.getExplosionResistance(level(), blockRayTraceResult.getBlockPos(), null);
         if (blastResist > getBlockBreakThreshold() + 1e-3) {
             Direction blockDirection = blockRayTraceResult.getDirection();
             this.ricochetSpeed(blockDirection);

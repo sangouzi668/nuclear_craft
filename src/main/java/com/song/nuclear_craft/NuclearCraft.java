@@ -123,7 +123,7 @@ public class NuclearCraft
         })
         .build();
 
-    public NuclearCraft(FMLJavaModLoadingContext context, ModLoadingContext modLoadingContext) {
+    public NuclearCraft(FMLJavaModLoadingContext context) {
         // Register event listeners
         context.getModEventBus().addListener(this::setup);
         context.getModEventBus().addListener(this::enqueueIMC);
@@ -143,6 +143,7 @@ public class NuclearCraft
         TileEntityRegister.TILE_ENTITY_TYPES.register(context.getModEventBus());
         ContainerTypeList.CONTAINERS.register(context.getModEventBus()); // 现在应该能正常工作了
 
+        ModLoadingContext modLoadingContext = ModLoadingContext.get();
         modLoadingContext.registerConfig(ModConfig.Type.CLIENT, ConfigClient.CLIENT);
         modLoadingContext.registerConfig(ModConfig.Type.COMMON, ConfigCommon.COMMON);
     }

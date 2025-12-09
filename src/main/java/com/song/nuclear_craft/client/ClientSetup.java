@@ -24,9 +24,13 @@ public class ClientSetup {
     public static KeyMapping zoom;
     
     public static void clientSetup(final FMLClientSetupEvent event){
-        // Initialize key bindings
-        gunReload = new KeyMapping("key."+ NuclearCraft.MODID+".load_ammo", GLFW.GLFW_KEY_R, "key."+NuclearCraft.MODID+".categories");
-        zoom = new KeyMapping("key."+NuclearCraft.MODID+".zoom", GLFW.GLFW_KEY_Z, "key."+NuclearCraft.MODID+".categories");
+        // Initialize key bindings (if not already initialized)
+        if (gunReload == null) {
+            gunReload = new KeyMapping("key."+ NuclearCraft.MODID+".load_ammo", GLFW.GLFW_KEY_R, "key."+NuclearCraft.MODID+".categories");
+        }
+        if (zoom == null) {
+            zoom = new KeyMapping("key."+NuclearCraft.MODID+".zoom", GLFW.GLFW_KEY_Z, "key."+NuclearCraft.MODID+".categories");
+        }
 
         // Register container screens (must be executed in main thread)
         event.enqueueWork(() -> {
